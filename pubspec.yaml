@@ -1,0 +1,39 @@
+name: test_hdd_app
+description: "A new Flutter project."
+
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.7.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  device_preview: 1.2.0
+  fl_chart: ^0.70.2
+  english_words: ^4.0.0
+  provider: ^6.0.0
+  dio: ^5.8.0+1
+  path_provider: ^2.1.5
+  open_filex: ^4.7.0
+  permission_handler: ^11.4.0
+  device_info_plus: ^11.3.3
+  flutter_launcher_icons: ^0.14.3
+  flutter_native_splash: ^2.4.5 
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+
+flutter:
+  assets:
+    - assets/iconApp/
+    - assets/icon/
+    - assets/hddradius/
+
+  uses-material-design: true
+

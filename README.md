@@ -1,16 +1,31 @@
-# hdd_procalc
+# HDD ProCalc - Horizontal Directional Drilling Calculator  
 
-A new Flutter project.
+**HDD ProCalc** is a professional mobile application developed with **Flutter** to create a **cross-platform** solution (iOS and Android) designed to assist technicians, engineers, and professionals in the **Horizontal Directional Drilling (HDD)** industry.  
 
-## Getting Started
+The app provides essential **calculations, reference manuals, and utilities** to optimize drilling operations, improve accuracy, and reduce errors in the field.  
 
-This project is a starting point for a Flutter application.
+## Features  
 
-A few resources to get you started if this is your first Flutter project:
+- **Drilling Calculations**: Essential formulas for pullback force, mud pressure, bore path design, and more.  
+- **Reference Manuals**: Quick access to industry standards, safety guidelines, and best practices.  
+- **Unit Converters**: Easy conversion between different measurement units used in HDD operations.  
+- **User-Friendly Interface**: Intuitive design for fast and efficient use in the field.  
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Getting Started  
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+This project was built using **Flutter**, allowing seamless performance on both **Android and iOS**.  
+
+### Development Resources  
+If you're new to Flutter, check out these resources:  
+- [Flutter Documentation](https://docs.flutter.dev/)  
+- [First Flutter App Tutorial](https://docs.flutter.dev/get-started/codelab)  
+- [Flutter Cookbook](https://docs.flutter.dev/cookbook)  
+
+## Contribution  
+Contributions are welcome! Feel free to submit issues or pull requests to improve the app.  
+
+### License  
+This project is under development. Licensing details will be provided in future updates.  
+
+---  
+**HDD ProCalc – Your Essential Tool for Directional Drilling Efficiency!** 🚀

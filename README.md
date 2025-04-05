@@ -15,14 +15,6 @@ The app provides essential **calculations, reference manuals, and utilities** to
 
 This project was built using **Flutter**, allowing seamless performance on both **Android and iOS**.  
 
-### Development Resources  
-If you're new to Flutter, check out these resources:  
-- [Flutter Documentation](https://docs.flutter.dev/)  
-- [First Flutter App Tutorial](https://docs.flutter.dev/get-started/codelab)  
-- [Flutter Cookbook](https://docs.flutter.dev/cookbook)  
-
-## Contribution  
-Contributions are welcome! Feel free to submit issues or pull requests to improve the app.  
 
 ### License  
 This project is under development. Licensing details will be provided in future updates.  

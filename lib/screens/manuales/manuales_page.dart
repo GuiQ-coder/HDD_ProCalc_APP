@@ -233,7 +233,7 @@ Future<void> _descargarYMostrarPDF(String nombre) async {
           setState(() {
             _archivosDescargados.remove(nombre);
           });
-          await _verificarArchivosDescargados(); // <-- Añade esta línea
+          await _verificarArchivosDescargados();
           if (!mounted) return;
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -291,7 +291,7 @@ Future<void> _descargarYMostrarPDF(String nombre) async {
                     setState(() {
                       _archivosDescargados.clear();
                     });
-                    await _verificarArchivosDescargados(); // <-- Añade esta línea
+                    await _verificarArchivosDescargados();
                     if (!mounted) return;
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(

@@ -5,7 +5,7 @@ import 'app.dart';
 void main() {
   runApp(
     DevicePreview(
-      enabled: false, // Desactiva en producción
+      enabled: false,
       builder: (context) => const MyApp(),
     ),
   );

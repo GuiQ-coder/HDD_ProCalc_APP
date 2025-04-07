@@ -4,6 +4,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'dart:io';
+import 'package:device_info_plus/device_info_plus.dart';
 
 class ManualesPage extends StatefulWidget {
   const ManualesPage({super.key});
@@ -13,14 +14,14 @@ class ManualesPage extends StatefulWidget {
 
 class ManualesPageState extends State<ManualesPage> {
   final Map<String, String> _manuales = {
-    'JT25': 'https://drive.google.com/file/d/1dG7BQQPvF_z58J-St6bq_XDtUsqxJVxX/view?export=download',
-    'JT30': 'https://drive.google.com/file/d/1TEDxDP-xt4wM0iXkS0a5O5qyuvQ4Y7QC/view?export=download',
-    'JT40': 'https://drive.google.com/file/d/1mcCEftWNk6Sm-tOMtUXnbffdAXas-btm/view?export=download',
-    'PipeTables': 'https://drive.google.com/file/d/1V6z82ivEeTNQXrt66re2wQWmrcBgn18A/view?export=download',
-    'VermeerD16x20ANavigator': 'https://drive.google.com/file/d/1oRIifkKeHv2pwnfeg4Zdwf3z3iO8of4-/view?export=download',
-    'VermeerD20x22Navigator': 'https://drive.google.com/file/d/1eTc1j6nyoEW-koeaejXdkO8LxLBFa9c_/view?export=download',
-    'VermeerD24x40SeriesINavigator': 'https://drive.google.com/file/d/1EZS9Gp2fSmA4uKLyCuxuccBPSOO2R0DW/view?export=download',
-    'VermeerD40x40NavtecNavigator': 'https://drive.google.com/file/d/17HOmkGgitXCVEvMU1kxjTzAhom7ZZ_07/view?export=download',
+    'JT25': 'https://drive.google.com/uc?export=download&id=1dG7BQQPvF_z58J-St6bq_XDtUsqxJVxX',
+    'JT30': 'https://drive.google.com/uc?export=download&id=1TEDxDP-xt4wM0iXkS0a5O5qyuvQ4Y7QC',
+    'JT40': 'https://drive.google.com/uc?export=download&id=1mcCEftWNk6Sm-tOMtUXnbffdAXas-btm',
+    'PipeTables': 'https://drive.google.com/uc?export=download&id=1V6z82ivEeTNQXrt66re2wQWmrcBgn18A',
+    'VermeerD16x20ANavigator': 'https://drive.google.com/uc?export=download&id=1oRIifkKeHv2pwnfeg4Zdwf3z3iO8of4-',
+    'VermeerD20x22Navigator': 'https://drive.google.com/uc?export=download&id=1eTc1j6nyoEW-koeaejXdkO8LxLBFa9c_',
+    'VermeerD24x40SeriesINavigator': 'https://drive.google.com/uc?export=download&id=1EZS9Gp2fSmA4uKLyCuxuccBPSOO2R0DW',
+    'VermeerD40x40NavtecNavigator': 'https://drive.google.com/uc?export=download&id=17HOmkGgitXCVEvMU1kxjTzAhom7ZZ_07',
   };
 
   final Map<String, String?> _archivosDescargados = {};
@@ -32,33 +33,51 @@ class ManualesPageState extends State<ManualesPage> {
     super.initState();
     _verificarArchivosDescargados();
   }
+  
 
   Future<void> _verificarArchivosDescargados() async {
-    try {
-      final dir = await _getDocumentDirectory();
-      final manualesDir = Directory('${dir.path}/manuales');
+  try {
+    final dir = await _getDocumentDirectory();
+    final manualesDir = Directory('${dir.path}/manuales');
+    
+    if (await manualesDir.exists()) {
+      final archivos = await manualesDir.list().where((f) => f is File).toList();
       
-      if (await manualesDir.exists()) {
-        final archivos = await manualesDir.list().toList();
-        
-        for (var archivo in archivos) {
-          if (archivo is File) {
-            final nombre = archivo.path.split('/').last.replaceAll('.pdf', '');
-            _archivosDescargados[nombre] = archivo.path;
-          }
-        }
-        
-        setState(() {});
+      final nuevosArchivos = <String, String>{};
+      for (var archivo in archivos) {
+        final file = archivo as File;
+        final nombre = file.path.split('/').last.replaceAll('.pdf', '');
+        nuevosArchivos[nombre] = file.path;
       }
-    } catch (e) {
-      debugPrint('Error al verificar archivos: $e');
+      
+      if (mounted) {
+        setState(() {
+          _archivosDescargados
+            ..clear()
+            ..addAll(nuevosArchivos);
+        });
+      }
+    } else {
+      if (mounted) {
+        setState(() {
+          _archivosDescargados.clear();
+        });
+      }
+    }
+  } catch (e) {
+    debugPrint('Error al verificar archivos: $e');
+    if (mounted) {
+      setState(() {
+        _archivosDescargados.clear();
+      });
     }
   }
+}
 
   Future<Directory> _getDocumentDirectory() async {
     if (Platform.isAndroid) {
       if (await _checkStoragePermission()) {
-        return Directory('/storage/emulated/0/Download');
+        return await getDownloadsDirectory() ?? await getApplicationDocumentsDirectory();
       }
       return await getApplicationDocumentsDirectory();
     } else {
@@ -66,82 +85,124 @@ class ManualesPageState extends State<ManualesPage> {
     }
   }
 
-  Future<bool> _checkStoragePermission() async {
-    if (!Platform.isAndroid) return true;
+Future<bool> _checkStoragePermission() async {
+  if (!Platform.isAndroid) return true;
 
-    try {
-      final versionString = Platform.operatingSystemVersion;
-      final sdkMatch = RegExp(r'SDK (\d+)').firstMatch(versionString);
-      final sdkVersion = sdkMatch != null ? int.parse(sdkMatch.group(1)!) : 0;
+  try {
+    // Para Android 13+ (API 33+)
+    if (await DeviceInfoPlugin().androidInfo.then((info) => info.version.sdkInt >= 33)) {
+      if (await Permission.manageExternalStorage.isGranted) {
+        return true;
+      }
       
-      final permission = sdkVersion >= 33 ? Permission.photos : Permission.storage;
-      return await permission.status.isGranted;
-    } catch (e) {
-      debugPrint('Error determinando versión Android: $e');
-      return await Permission.storage.status.isGranted;
+      final status = await Permission.manageExternalStorage.request();
+      if (!status.isGranted && mounted) {
+        _showPermissionDeniedDialog(context);
+      }
+      return status.isGranted;
     }
-  }
-
-  Future<void> _descargarYMostrarPDF(String nombre) async {
-    try {
-      if (Platform.isAndroid) {
-        final hasPermission = await _checkStoragePermission();
-        if (!hasPermission) {
-          if (!mounted) return;
+    // Para versiones anteriores
+    else {
+      final status = await Permission.storage.status;
+      if (!status.isGranted) {
+        final result = await Permission.storage.request();
+        if (!result.isGranted && mounted) {
           _showPermissionDeniedDialog(context);
-          return;
         }
+        return result.isGranted;
       }
+      return true;
+    }
+  } catch (e) {
+    debugPrint('Error verificando permisos: $e');
+    return false;
+  }
+}
+Future<void> _descargarYMostrarPDF(String nombre) async {
+  String? rutaGuardado;
 
-      setState(() {
-        _isLoading = true;
-        loadingManual = nombre;
-      });
-
-      final dir = await _getDocumentDirectory();
-      final manualesDir = Directory('${dir.path}/manuales');
-      if (!await manualesDir.exists()) {
-        await manualesDir.create(recursive: true);
-      }
-
-      final rutaGuardado = '${manualesDir.path}/$nombre.pdf';
-      
-      final dio = Dio();
-      await dio.download(
-        _manuales[nombre]!,
-        rutaGuardado,
-        onReceiveProgress: (received, total) {
-          if (total != -1) {
-            debugPrint('Progreso: ${(received / total * 100).toStringAsFixed(0)}%');
-          }
-        },
-      );
-
-      setState(() {
-        _archivosDescargados[nombre] = rutaGuardado;
-      });
-
-      final result = await OpenFilex.open(rutaGuardado);
-      debugPrint('Resultado al abrir archivo: ${result.message}');
-      
-    } catch (e) {
-      if (!mounted) return;
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error: ${e.toString()}'),
-          duration: const Duration(seconds: 3),
-        ),
-      );
-      debugPrint('Error al descargar PDF: $e');
-    } finally {
-      if (mounted) {
-        setState(() {
-          _isLoading = false;
-          loadingManual = null;
-        });
+  try {
+    if (_archivosDescargados.containsKey(nombre)) {
+      rutaGuardado = _archivosDescargados[nombre]!;
+      final file = File(rutaGuardado);
+      if (await file.exists()) {
+        final result = await OpenFilex.open(rutaGuardado);
+        if (result.type != ResultType.done) {
+          // Si falla al abrir, eliminar el archivo corrupto
+          await file.delete();
+          setState(() {
+            _archivosDescargados.remove(nombre);
+          });
+          throw Exception('Archivo corrupto. Por favor descárgalo nuevamente.');
+        }
+        return;
       }
     }
+
+    setState(() {
+      _isLoading = true;
+      loadingManual = nombre;
+    });
+
+    final directory = await getDownloadsDirectory() ?? await getApplicationDocumentsDirectory();
+    final manualesDir = Directory('${directory.path}/manuales');
+    
+    if (!await manualesDir.exists()) {
+      await manualesDir.create(recursive: true);
+    }
+    
+    rutaGuardado = '${manualesDir.path}/$nombre.pdf'; 
+    
+
+    final dio = Dio(BaseOptions(
+      receiveTimeout: const Duration(seconds: 30),
+      connectTimeout: const Duration(seconds: 30),
+    ));
+
+    final response = await dio.download(
+      _manuales[nombre]!,
+      rutaGuardado,
+      onReceiveProgress: (received, total) {
+        debugPrint('Progreso: ${(received / total * 100).toStringAsFixed(0)}%');
+      },
+    );
+
+    if (response.statusCode != 200) {
+      throw Exception('Error en la descarga: ${response.statusCode}');
+    }
+
+    final file = File(rutaGuardado);
+    if (!await file.exists()) {
+      throw Exception('El archivo no se descargó correctamente');
+    }
+
+    setState(() {
+      _archivosDescargados[nombre] = rutaGuardado;
+    });
+
+    final result = await OpenFilex.open(rutaGuardado);
+    if (result.type != ResultType.done) {
+      throw Exception('No se pudo abrir el archivo: ${result.message}');
+    }
+    
+  } catch (e) {
+    if (!mounted) return;
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('Error: ${e.toString()}'),
+        duration: const Duration(seconds: 3),
+      ),
+    );
+    debugPrint('Error al descargar PDF: $e');
+  } finally {
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+        loadingManual = null;
+      });
+    }
   }
+}
 
   void _showPermissionDeniedDialog(BuildContext context) {
     showDialog(
@@ -175,9 +236,11 @@ class ManualesPageState extends State<ManualesPage> {
         final file = File(_archivosDescargados[nombre]!);
         if (await file.exists()) {
           await file.delete();
+          // Actualizar el estado y verificar archivos
           setState(() {
             _archivosDescargados.remove(nombre);
           });
+          await _verificarArchivosDescargados(); // <-- Añade esta línea
           if (!mounted) return;
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(
@@ -226,7 +289,7 @@ class ManualesPageState extends State<ManualesPage> {
                 ),
               );
 
-              if (confirm == true) {
+             if (confirm == true) {
                 try {
                   final dir = await _getDocumentDirectory();
                   final manualesDir = Directory('${dir.path}/manuales');
@@ -235,6 +298,7 @@ class ManualesPageState extends State<ManualesPage> {
                     setState(() {
                       _archivosDescargados.clear();
                     });
+                    await _verificarArchivosDescargados(); // <-- Añade esta línea
                     if (!mounted) return;
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
@@ -292,7 +356,24 @@ class ManualesPageState extends State<ManualesPage> {
                             onPressed: () => _eliminarManual(nombre),
                           )
                         : null,
-                    onTap: () => _descargarYMostrarPDF(nombre),
+                    onTap: () {
+                      if (estaDescargado) {
+                        setState(() {
+                          loadingManual = nombre;
+                          _isLoading = true;
+                        });
+                        _descargarYMostrarPDF(nombre).then((_) {
+                          if (mounted) {
+                            setState(() {
+                              _isLoading = false;
+                              loadingManual = null;
+                            });
+                          }
+                        });
+                      } else {
+                        _descargarYMostrarPDF(nombre);
+                      }
+                    },
                   ),
               
                 );
@@ -301,3 +382,4 @@ class ManualesPageState extends State<ManualesPage> {
     );
   }
 }
+

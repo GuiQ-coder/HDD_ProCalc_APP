@@ -28,11 +28,18 @@ class ManualesPageState extends State<ManualesPage> {
   bool _isLoading = false;
   String? loadingManual;
 
-  @override
-  void initState() {
-    super.initState();
-    _verificarArchivosDescargados();
-  }
+@override
+void didChangeDependencies() {
+  super.didChangeDependencies();
+  _verificarArchivosDescargados();
+}
+
+// También cuando la página vuelva a ser visible
+@override
+void activate() {
+  super.activate();
+  _verificarArchivosDescargados();
+}
   
 
   Future<void> _verificarArchivosDescargados() async {
@@ -47,17 +54,23 @@ class ManualesPageState extends State<ManualesPage> {
       for (var archivo in archivos) {
         final file = archivo as File;
         final nombre = file.path.split('/').last.replaceAll('.pdf', '');
-        nuevosArchivos[nombre] = file.path;
+        // Verificar que el archivo no esté vacío
+        if (await file.length() > 0) {
+          nuevosArchivos[nombre] = file.path;
+        } else {
+          // Eliminar archivos corruptos
+          await file.delete();
+        }
       }
       
       if (mounted) {
         setState(() {
-          _archivosDescargados
-            ..clear()
-            ..addAll(nuevosArchivos);
+          _archivosDescargados.clear();
+          _archivosDescargados.addAll(nuevosArchivos);
         });
       }
     } else {
+      await manualesDir.create(recursive: true);
       if (mounted) {
         setState(() {
           _archivosDescargados.clear();
@@ -77,7 +90,8 @@ class ManualesPageState extends State<ManualesPage> {
   Future<Directory> _getDocumentDirectory() async {
     if (Platform.isAndroid) {
       if (await _checkStoragePermission()) {
-        return await getDownloadsDirectory() ?? await getApplicationDocumentsDirectory();
+        // Usar siempre el mismo directorio para evitar inconsistencias
+        return await getApplicationDocumentsDirectory();
       }
       return await getApplicationDocumentsDirectory();
     } else {
@@ -118,25 +132,20 @@ Future<bool> _checkStoragePermission() async {
     return false;
   }
 }
-Future<void> _descargarYMostrarPDF(String nombre) async {
-  String? rutaGuardado;
 
+Future<void> _descargarYMostrarPDF(String nombre) async {
   try {
+    // Verificar si ya está descargado
     if (_archivosDescargados.containsKey(nombre)) {
-      rutaGuardado = _archivosDescargados[nombre]!;
-      final file = File(rutaGuardado);
-      if (await file.exists()) {
-        final result = await OpenFilex.open(rutaGuardado);
-        if (result.type != ResultType.done) {
-          // Si falla al abrir, eliminar el archivo corrupto
-          await file.delete();
-          setState(() {
-            _archivosDescargados.remove(nombre);
-          });
-          throw Exception('Archivo corrupto. Por favor descárgalo nuevamente.');
-        }
-        return;
+      final file = File(_archivosDescargados[nombre]!);
+      if (await file.exists() && await file.length() > 0) {
+        final result = await OpenFilex.open(file.path);
+        if (result.type == ResultType.done) return;
+        // Si falla, eliminar el archivo corrupto
+        await file.delete();
       }
+      // Eliminar referencia si el archivo no existe o está corrupto
+      setState(() => _archivosDescargados.remove(nombre));
     }
 
     setState(() {
@@ -144,54 +153,38 @@ Future<void> _descargarYMostrarPDF(String nombre) async {
       loadingManual = nombre;
     });
 
-    final directory = await getDownloadsDirectory() ?? await getApplicationDocumentsDirectory();
+    final directory = await _getDocumentDirectory();
     final manualesDir = Directory('${directory.path}/manuales');
     
     if (!await manualesDir.exists()) {
       await manualesDir.create(recursive: true);
     }
     
-    rutaGuardado = '${manualesDir.path}/$nombre.pdf'; 
+    final rutaGuardado = '${manualesDir.path}/$nombre.pdf';
     
-
-    final dio = Dio(BaseOptions(
-      receiveTimeout: const Duration(seconds: 30),
-      connectTimeout: const Duration(seconds: 30),
-    ));
-
-    final response = await dio.download(
+    final dio = Dio();
+    await dio.download(
       _manuales[nombre]!,
       rutaGuardado,
+      deleteOnError: true,
       onReceiveProgress: (received, total) {
-        debugPrint('Progreso: ${(received / total * 100).toStringAsFixed(0)}%');
+        debugPrint('Descargando $nombre: ${(received / total * 100).toStringAsFixed(0)}%');
       },
     );
 
-    if (response.statusCode != 200) {
-      throw Exception('Error en la descarga: ${response.statusCode}');
-    }
-
+    // Verificación post-descarga
     final file = File(rutaGuardado);
-    if (!await file.exists()) {
+    if (!await file.exists() || await file.length() == 0) {
       throw Exception('El archivo no se descargó correctamente');
     }
 
-    setState(() {
-      _archivosDescargados[nombre] = rutaGuardado;
-    });
-
-    final result = await OpenFilex.open(rutaGuardado);
-    if (result.type != ResultType.done) {
-      throw Exception('No se pudo abrir el archivo: ${result.message}');
-    }
+    setState(() => _archivosDescargados[nombre] = rutaGuardado);
+    await OpenFilex.open(rutaGuardado);
     
   } catch (e) {
     if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text('Error: ${e.toString()}'),
-        duration: const Duration(seconds: 3),
-      ),
+      SnackBar(content: Text('Error: ${e.toString()}')),
     );
     debugPrint('Error al descargar PDF: $e');
   } finally {

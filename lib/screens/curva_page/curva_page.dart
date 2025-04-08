@@ -30,6 +30,25 @@ class CurvaCompletaPageState extends State<CurvaCompletaPage> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            
+            SizedBox(height: 15,),
+
+            Image.asset(
+              'assets/icon/curvacompletaimg.png',
+              height: 180,
+              fit: BoxFit.contain,
+              errorBuilder: (context, error, stackTrace) => Icon(
+                Icons.circle_outlined,
+                size: 100,
+                color: Colors.blue,
+              ),
+            ),
+
+            SizedBox(height: 15),
+
+
+
+
             TextField(
               decoration: InputDecoration(labelText: 'Ángulo de entrada'),
               keyboardType: TextInputType.numberWithOptions(decimal: true),

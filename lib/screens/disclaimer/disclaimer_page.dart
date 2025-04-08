@@ -1,81 +1,128 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../../../providers/locale_provider.dart';
 
 class DisclaimerPage extends StatefulWidget {
   const DisclaimerPage({super.key});
 
   @override
-  DisclaimerPageState createState() => DisclaimerPageState();
+  State<DisclaimerPage> createState() => _DisclaimerPageState();
 }
 
-class DisclaimerPageState extends State<DisclaimerPage> {
+class _DisclaimerPageState extends State<DisclaimerPage> {
   bool _isAccepted = false;
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Descargo de responsabilidades', style: Theme.of(context).textTheme.headlineMedium),
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        toolbarHeight: 80,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(32.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
+    final l10n = AppLocalizations.of(context)!;
+    final theme = Theme.of(context);
 
-            const SizedBox(height: 20),
-            
-            Text(
-              'La información, recomendaciones, enlaces, así como '
-              'todos los cálculos relacionados mostrados en esta aplicación está ' 
-              'basada en experiencia colectiva y conocimiento investigado de '
-              'publicaciones de este ramo y solamente expuesta y ejecutada en '
-              'forma de aplicación para su difusión, pero los usuarios '
-              'deben determinar como usar la información de esta y comprobar '
-              'de manera personal sus propios cálculos, esta app no se hace '
-              'responsable por daños o errores que puedan resultar del uso de '
-              'la misma ni damos garantía como tal. Para utilizarla es necesario '
-              'aceptar este descargo de responsabilidad y aceptar que es responsable del uso '
-              'que le de a la misma.',
-              style: Theme.of(context).textTheme.bodyLarge,
-              textAlign: TextAlign.justify,  
-            ),
-            
-            const SizedBox(height: 40),
-            
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Checkbox(
-                  value: _isAccepted,
-                  onChanged: (bool? value) {
-                    setState(() {
-                      _isAccepted = value ?? false;
-                    });
-                  },
-                  activeColor: Theme.of(context).colorScheme.secondary,
+    return Scaffold(
+      appBar: _buildAppBar(context, theme, l10n),
+      body: Column(
+        children: [
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 16.0),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surface.withValues(alpha: 0.8),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: theme.colorScheme.secondary.withValues(alpha: 0.5),
+                    width: 1.5,
+                  ),
                 ),
-                Text('Acepto los términos.', style: Theme.of(context).textTheme.bodyLarge),
-              ],
-            ),
-            
-            const SizedBox(height: 20),
-            
-            ElevatedButton(
-              onPressed: _isAccepted
-                  ? () => Navigator.pushNamed(context, '/menu')
-                  : null,
-              style: ElevatedButton.styleFrom(
-                foregroundColor: Theme.of(context).colorScheme.onSecondary,
-                backgroundColor: Theme.of(context).colorScheme.secondary,
-                padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                padding: const EdgeInsets.all(16.0),
+                child: Scrollbar(
+                  controller: _scrollController,
+                  thumbVisibility: true,
+                  child: SingleChildScrollView(
+                    controller: _scrollController,
+                    child: Text(
+                      l10n.disclaimerText,
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                        height: 1.5,
+                      ),
+                      textAlign: TextAlign.justify,
+                    ),
+                  ),
+                ),
               ),
-              child: const Text('Continuar', style: TextStyle(fontSize: 18, color: Colors.white)),
             ),
-          ],
+          ),
+          
+          _buildBottomSection(context, theme, l10n),
+        ],
+      ),
+    );
+  }
+
+  PreferredSizeWidget _buildAppBar(BuildContext context, ThemeData theme, AppLocalizations l10n) {
+    return AppBar( // Retorna directamente un AppBar
+      title: Text(
+        l10n.disclaimerTitle,
+        style: theme.textTheme.headlineMedium,
+      ),
+      backgroundColor: theme.colorScheme.secondary,
+      toolbarHeight: 80,
+      actions: [
+        IconButton(
+          icon: const Icon(Icons.language),
+          onPressed: () {
+            final provider = Provider.of<LocaleProvider>(context, listen: false);
+            final newLocale = provider.locale.languageCode == 'es' 
+                ? const Locale('en') 
+                : const Locale('es');
+            provider.setLocale(newLocale);
+          },
         ),
+      ],
+    );
+  }
+
+  Widget _buildBottomSection(BuildContext context, ThemeData theme, AppLocalizations l10n) {
+    return Padding(
+      padding: const EdgeInsets.all(24.0),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Checkbox(
+                value: _isAccepted,
+                onChanged: (bool? value) => setState(() => _isAccepted = value ?? false),
+                activeColor: theme.colorScheme.secondary,
+              ),
+              Text(l10n.acceptTerms, style: theme.textTheme.bodyLarge),
+            ],
+          ),
+          const SizedBox(height: 20),
+          ElevatedButton(
+            onPressed: _isAccepted 
+                ? () => Navigator.pushNamed(context, '/menu') 
+                : null,
+            style: ElevatedButton.styleFrom(
+              foregroundColor: theme.colorScheme.onSecondary,
+              backgroundColor: _isAccepted
+                  ? theme.colorScheme.secondary
+                  : theme.colorScheme.secondary.withOpacity(0.5),
+              minimumSize: const Size(double.infinity, 50),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
+            ),
+            child: Text(l10n.continueButton),
+          ),
+        ],
       ),
     );
   }

@@ -32,7 +32,7 @@ class RadioCurvaturaPageState extends State<RadioCurvaturaPage> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Imagen representativa
+            
                   Image.asset(
                     'assets/icon/radiocurvatura.png',
                     height: 180,

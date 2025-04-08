@@ -5,10 +5,10 @@ final ThemeData appTheme = ThemeData(
     primary: Colors.black,
     secondary: const Color.fromRGBO(85, 0, 0, 1),
     tertiary: const Color.fromRGBO(170, 0, 0, 1),
-    surface:Colors.black87,
+    surface: Colors.black87,
     onPrimary: Colors.white,
     onSecondary: Colors.white,
     onSurface: Colors.white,
   ),
+
 );
-    

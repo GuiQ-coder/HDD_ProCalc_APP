@@ -41,7 +41,7 @@ class MenuPage extends StatelessWidget {
               
               // Botones en columna
              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 0),
                 child: Column(
                   children: menuItems.map((item) {
                     return Padding(

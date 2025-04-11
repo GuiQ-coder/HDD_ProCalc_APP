@@ -58,12 +58,27 @@ class EspacioAnularPageState extends State<EspacioAnularPage> {
                 });
               },
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _calcularVolumen,
-              child: Text('Calcular Volumen'),
+          SizedBox(height: 20),
+
+           ElevatedButton(
+            onPressed: _calcularVolumen,
+            style: ElevatedButton.styleFrom(
+               backgroundColor: Theme.of(context).colorScheme.secondary,
+               foregroundColor: Colors.white,
+               padding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+               shape: RoundedRectangleBorder(
+                 borderRadius: BorderRadius.circular(8),
+               ),
+             ),
+             child: Text(
+               'CALCULAR',
+               style: TextStyle(
+                 fontSize: 16,
+                 fontWeight: FontWeight.bold,
+               ),
             ),
-            SizedBox(height: 20),
+          ),
+          SizedBox(height: 16),
             Text(
               'Volumen: ${_volumen.toStringAsFixed(2)} m³',
               style: TextStyle(fontSize: 18),

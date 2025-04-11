@@ -28,8 +28,8 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
       locale: localeProvider.locale,
-      routes: appRoutes,  // ¡Aquí conectas tus rutas!
-      initialRoute: '/',  // Ruta inicial
+      routes: appRoutes,
+      initialRoute: '/',
     );
   }
 }

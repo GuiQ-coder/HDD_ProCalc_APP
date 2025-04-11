@@ -34,7 +34,7 @@ class CurvaCompletaPageState extends State<CurvaCompletaPage> {
             SizedBox(height: 15,),
 
             Image.asset(
-              'assets/icon/curvacompletaimg.png',
+              'assets/icon/curvacompleta_es.png',
               height: 180,
               fit: BoxFit.contain,
               errorBuilder: (context, error, stackTrace) => Icon(
@@ -85,12 +85,27 @@ class CurvaCompletaPageState extends State<CurvaCompletaPage> {
                 });
               },
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _calcular,
-              child: Text('Calcular'),
+          SizedBox(height: 20),
+
+           ElevatedButton(
+            onPressed: _calcular,
+            style: ElevatedButton.styleFrom(
+               backgroundColor: Theme.of(context).colorScheme.secondary,
+               foregroundColor: Colors.white,
+               padding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+               shape: RoundedRectangleBorder(
+                 borderRadius: BorderRadius.circular(8),
+               ),
+             ),
+             child: Text(
+               'CALCULAR',
+               style: TextStyle(
+                 fontSize: 16,
+                 fontWeight: FontWeight.bold,
+               ),
             ),
-            SizedBox(height: 20),
+          ),
+          SizedBox(height: 16),
             Text(
               'Resultado: ${_resultado.toStringAsFixed(2)}',
               style: TextStyle(fontSize: 18),

@@ -20,7 +20,7 @@ Map<String, List<Map<String, dynamic>>> options = {
       {'name': 'Profundidad/tubo', 'icon': Icons.play_for_work_outlined, 'route': '/prof_tubo'},
       {'name': 'Graficar/barra', 'icon': Icons.auto_graph_outlined, 'route': '/graficar_barra'},
       {'name': 'Dar en el blanco', 'icon': Icons.golf_course, 'route': '/dar_blanco'},
-      {'name': 'Tabla ° y %', 'icon': Icons.architecture, 'route': '/tabla_porc_grado'},
+      {'name': 'Tabla ° y %', 'icon': Icons.architecture, 'route': '/tabla_porc_grados'},
       {'name': 'Tabla de salida', 'icon': Icons.backup_table_outlined, 'route': '/tabla_salida'},
       {'name': 'Tabla curva de tubería', 'icon': Icons.assignment, 'route': '/tabla_curva_salida'},
     ],

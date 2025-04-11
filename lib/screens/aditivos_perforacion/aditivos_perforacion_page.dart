@@ -74,12 +74,27 @@ class AditivosPerforacionPageState extends State<AditivosPerforacionPage> {
                 });
               },
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _calcularAditivos,
-              child: Text('Calcular Aditivos'),
+          SizedBox(height: 20),
+
+           ElevatedButton(
+            onPressed: _calcularAditivos,
+            style: ElevatedButton.styleFrom(
+               backgroundColor: Theme.of(context).colorScheme.secondary,
+               foregroundColor: Colors.white,
+               padding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
+               shape: RoundedRectangleBorder(
+                 borderRadius: BorderRadius.circular(8),
+               ),
+             ),
+             child: Text(
+               'CALCULAR',
+               style: TextStyle(
+                 fontSize: 16,
+                 fontWeight: FontWeight.bold,
+               ),
             ),
-            SizedBox(height: 20),
+          ),
+          SizedBox(height: 16),
             Expanded(
               child: ListView.builder(
                 itemCount: _resultados.length,

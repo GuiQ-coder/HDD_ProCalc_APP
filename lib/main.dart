@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:test_hdd_app/routes.dart';
-import 'theme.dart';
 import 'providers/locale_provider.dart';
-  
+import 'routes.dart';
+import 'package:test_hdd_app/theme.dart';
+
 void main() {
   runApp(
     ChangeNotifierProvider(
@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       darkTheme: appTheme,
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      locale: localeProvider.locale,
+      locale: localeProvider.locale, // Usa el locale del provider
       routes: appRoutes,
       initialRoute: '/',
     );

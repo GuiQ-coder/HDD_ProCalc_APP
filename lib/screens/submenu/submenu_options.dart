@@ -40,7 +40,7 @@ Map<String, List<Map<String, dynamic>>> options = {
 
 
 List<Widget> getOptions(String category, BuildContext context) {
-  final items = category == 'Todo' 
+  final items = category == 'Todo'
       ? options.values.expand((list) => list).toList()
       : options[category]!;
   

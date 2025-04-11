@@ -1,31 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 import 'package:test_hdd_app/widgets/menu_button.dart';
-
-
+import 'package:test_hdd_app/providers/locale_provider.dart';
 
 class MenuPage extends StatelessWidget {
   const MenuPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     final menuItems = [
-      {'label': 'Perforador', 'icon': Icons.construction},
-      {'label': 'Navegador', 'icon': Icons.explore},
-      {'label': 'Fluidos', 'icon': Icons.water},
-      {'label': 'Todo', 'icon': Icons.format_list_bulleted},
-      {'label': 'Opciones', 'icon': Icons.settings},
+      {'label': l10n.driller, 'icon': Icons.construction},
+      {'label': l10n.navigator, 'icon': Icons.explore},
+      {'label': l10n.fluids, 'icon': Icons.water},
+      {'label': l10n.allItems, 'icon': Icons.format_list_bulleted},
+      {'label': l10n.settings, 'icon': Icons.settings},
     ];
 
     return Scaffold(
+
       body: SingleChildScrollView(
         child: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
             children: [
 
-              const SizedBox(height: 140), // Espacio superior
+              const SizedBox(height: 140),
               
-              // Logo Arriba
+              
               Container(
                 width: 180,
                 height: 180,
@@ -39,7 +42,7 @@ class MenuPage extends StatelessWidget {
               
               const SizedBox(height: 64),
               
-              // Botones en columna
+              
              Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 0),
                 child: Column(

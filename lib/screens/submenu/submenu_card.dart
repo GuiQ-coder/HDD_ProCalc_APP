@@ -26,7 +26,7 @@ class SubMenuCard extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: SizedBox(
-            height: 150, // Altura fija para mantener uniformidad
+            height: 150,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

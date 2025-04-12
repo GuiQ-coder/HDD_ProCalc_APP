@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../../providers/locale_provider.dart';
+import 'package:test_hdd_app/screens/menu/menu_page.dart';
 
 class DisclaimerPage extends StatefulWidget {
   const DisclaimerPage({super.key});
@@ -107,8 +108,13 @@ class _DisclaimerPageState extends State<DisclaimerPage> {
           ),
           const SizedBox(height: 20),
           ElevatedButton(
-            onPressed: _isAccepted 
-                ? () => Navigator.pushNamed(context, '/menu') 
+            onPressed: _isAccepted
+                ? () {
+                    Navigator.of(context).pushAndRemoveUntil(
+                      MaterialPageRoute(builder: (context) => const MenuPage()),
+                      (Route<dynamic> route) => false,
+                    );
+                  }
                 : null,
             style: ElevatedButton.styleFrom(
               foregroundColor: theme.colorScheme.onSecondary,

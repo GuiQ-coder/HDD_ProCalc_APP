@@ -1,24 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:test_hdd_app/screens/submenu/submenu_options.dart';
+import 'package:test_hdd_app/constants/category_ids.dart';
 
 class SubMenuPage extends StatelessWidget {
-  final String title;
-  const SubMenuPage(this.title, {super.key});
+  final String categoryId;
+
+  const SubMenuPage({super.key, required this.categoryId});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
+   
+    final bool isLanguageSettings = categoryId == 'language';
+    
     return Scaffold(
       appBar: AppBar(
-        title: Text(title, style: Theme.of(context).textTheme.headlineMedium),
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        title: Text(_getCategoryTitle(categoryId, l10n)),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: GridView.count(
-          crossAxisCount: 2,
-          children: getOptions(title, context),
-        ),
-      ),
+      body: isLanguageSettings
+          ? ListView(
+              children: getOptions(categoryId, context),
+            )
+          : GridView.count(
+              crossAxisCount: 2,
+              childAspectRatio: 1.2,
+              mainAxisSpacing: 8,
+              crossAxisSpacing: 8,
+              padding: const EdgeInsets.all(8),
+              children: getOptions(categoryId, context),
+            ),
     );
+  }
+
+  String _getCategoryTitle(String categoryId, AppLocalizations l10n) {
+    switch(categoryId) {
+      case CategoryIds.driller: return l10n.driller;
+      case CategoryIds.navigator: return l10n.navigator;
+      case CategoryIds.fluids: return l10n.fluids;
+      case CategoryIds.settings: return l10n.settings;
+      case 'all': return l10n.allItems;
+      default: return categoryId;
+    }
   }
 }

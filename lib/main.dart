@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'providers/locale_provider.dart';
-import 'routes.dart';
+import 'package:provider/provider.dart';
+import 'package:test_hdd_app/routes.dart';
+import 'package:test_hdd_app/providers/locale_provider.dart';
 import 'package:test_hdd_app/theme.dart';
+import 'l10n.dart';
 
 void main() {
   runApp(
@@ -25,11 +26,17 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: appTheme,
       darkTheme: appTheme,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      locale: localeProvider.locale, // Usa el locale del provider
-      routes: appRoutes,
+      localizationsDelegates: L10n.delegates,
+      supportedLocales: L10n.supportedLocales,
+      locale: localeProvider.locale,
       initialRoute: '/',
+      routes: appRoutes,
+      onGenerateRoute: generateRoute,
+      onUnknownRoute: (settings) => MaterialPageRoute(
+        builder: (context) => Scaffold(
+          body: Center(child: Text('Página no encontrada')),
+        ),
+      ),
     );
   }
 }

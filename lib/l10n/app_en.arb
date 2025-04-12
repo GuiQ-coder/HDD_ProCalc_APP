@@ -3,10 +3,46 @@
     "disclaimerText":"The information, recommendations, links, and all related calculations presented in this application are based on collective experience and knowledge researched from publications in this field and are solely presented and executed in the form of an application for dissemination purposes. However, users must determine how to use the information herein and personally verify the accuracy of their own calculations. This application assumes no responsibility for any damages, errors, or consequences that may result from the use or interpretation of the information provided. Furthermore, it is explicitly stated that no warranty of any kind is offered regarding the accuracy, completeness, or suitability of the information or calculations presented. By using this application, you acknowledge that you have read and understood this disclaimer and fully accept that you are solely responsible for the use you make of it. Access to and use of this application imply the unconditional acceptance of the terms and conditions set forth herein.",
     "acceptTerms":"I accept the terms.",
     "continueButton":"Continue",
+
     "appTitle": "HDD ProCalc",
+
     "driller": "Driller",
     "navigator": "Navigator",
     "fluids": "Fluids",
     "allItems": "All Items",
-    "settings": "Settings"
+    "settings": "Settings",
+    
+    "setBackRig": "Set Back Rig",
+    "pipeWeight": "Pipe Weight",
+    "pullStress": "Pull Stress HDPE",
+    "buoyancy": "Buoyancy",
+    "makeUp": "Make Up",
+    "rop": "ROP (time/bar)",
+    "pipeHandling": "Pipe Handling",
+    "threadMeasurements": "Thread Measurements",
+    "manuals": "Manuals",
+
+    "curveRadius": "Curve Radius",
+    "smysCurve": "Radius by S.M.Y.S",
+    "curve": "Curve",
+    "depthPerPipe": "Depth per Pipe",
+    "graphPerBar": "Graph per Bar",
+    "hitTarget": "Hit Target",
+    "degreePercentTable": "Degrees and % Table",
+    "exitTable": "Exit Table",
+    "pipeCurveTable": "Pipe Curve Table",
+    
+    "tankVolume": "Tank Volume",
+    "annularSpace": "Annular Space",
+    "drillingAdditives": "Drilling Additives",
+    "requiredFluid": "Required Fluid",
+    "advisors": "Advisors",
+    "appInfo": "App Information",
+    
+    "language": "Language",
+    "darkMode": "Dark Mode",
+
+    "languageSettings": "Language Settings",
+    "selectLanguage": "Select your preferred language"
+
   }

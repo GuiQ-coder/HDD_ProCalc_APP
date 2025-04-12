@@ -3,10 +3,48 @@
     "disclaimerText":"La información, recomendaciones, enlaces y todos los cálculos presentados en esta aplicación se fundamentan en la experiencia acumulada y el conocimiento derivado de investigaciones en publicaciones especializadas del sector. Esta aplicación se ofrece y se ejecuta únicamente con fines de difusión. No obstante, es responsabilidad exclusiva del usuario determinar la aplicación y el uso que dará a la información aquí contenida, así como verificar de forma independiente la exactitud de sus propios cálculos. Esta aplicación no asume responsabilidad alguna por cualquier daño, error o consecuencia que pudiera resultar del uso o la interpretación de la información proporcionada. Asimismo, se declara explícitamente que no se ofrece ninguna garantía de ningún tipo en relación con la exactitud, integridad o idoneidad de la información o los cálculos presentados. Al utilizar esta aplicación, usted reconoce haber leído y comprendido este descargo de responsabilidad y acepta plenamente ser el único responsable del uso que le dé a la misma. El acceso y la utilización de esta aplicación implican la aceptación incondicional de los términos y condiciones aquí establecidos.",
     "acceptTerms":"Acepto los términos.",
     "continueButton":"Continuar",
+
     "appTitle": "HDD ProCalc",
     "driller": "Perforador",
     "navigator": "Navegador",
     "fluids": "Fluidos",
-    "allItems": "Todo",
-    "settings": "Opciones"
+    "settings": "Opciones",
+    "allItems": "Todos los ítems",
+    
+    "setBackRig": "Set Back Rig",
+    "pipeWeight": "Peso de Tubo",
+    "pullStress": "Pull Stress HDPE",
+    "buoyancy": "Flotabilidad",
+    "makeUp": "Make Up",
+    "rop": "ROP (tiempo/barra)",
+    "pipeHandling": "Manejo de tubería",
+    "threadMeasurements": "Medidas de Roscas",
+    "manuals": "Manuales",
+    
+    "curveRadius": "Radio de curvatura",
+    "smysCurve": "Radio por S.M.Y.S",
+    "curve": "Curva",
+    "depthPerPipe": "Profundidad/tubo",
+    "graphPerBar": "Graficar/barra",
+    "hitTarget": "Dar en el blanco",
+    "degreePercentTable": "Tabla ° y %",
+    "exitTable": "Tabla de salida",
+    "pipeCurveTable": "Tabla curva de tubería",
+
+    "tankVolume": "Volumen Tanque",
+    "annularSpace": "Espacio Anular",
+    "drillingAdditives": "Aditivos de perforación",
+    "requiredFluid": "Fluido necesario",
+    "advisors": "Asesores",
+    "appInfo": "Información de la app",
+    
+    "language": "Idioma",
+    "darkMode": "Modo oscuro",
+    
+    "languageSettings": "Configuración de idioma",
+    "selectLanguage": "Selecciona tu idioma preferido"
   }
+        
+    
+        
+    

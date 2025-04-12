@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MedidasRoscasPage extends StatefulWidget {
   const MedidasRoscasPage({super.key});
@@ -80,17 +80,19 @@ class MedidasRoscasPageState extends State<MedidasRoscasPage> {
   }
 
 @override
-Widget build(BuildContext context) {
-  return Scaffold(
-    appBar: AppBar(
-      title: Text('Medidas de Roscas'),
-    ),
-    body: SingleChildScrollView(
-      padding: EdgeInsets.all(16), // Agrega un padding opcional
-      child: Column(
-        children: [
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(l10n.threadMeasures),
+      ),
+      body: SingleChildScrollView(
+        padding: EdgeInsets.all(16),
+        child: Column(
+          children: [
             Image.asset(
-              'assets/icon/medidasroscasimg.png', // Asegúrate de que la imagen esté en la carpeta correcta
+              'assets/icon/medidasroscasimg.png',
               width: 300,
               height: 300,
               errorBuilder: (context, error, stackTrace) {
@@ -99,7 +101,7 @@ Widget build(BuildContext context) {
             ),
             SizedBox(height: 20),
             Text(
-              'Selecciona el tipo de rosca y presiona "Mostrar" para ver las medidas.',
+              l10n.selectThreadType,
               style: TextStyle(fontSize: 16, color: Colors.white),
               textAlign: TextAlign.center,
             ),
@@ -122,14 +124,12 @@ Widget build(BuildContext context) {
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Theme.of(context).colorScheme.secondary,
-                foregroundColor: Colors.white, // Color del texto
+                foregroundColor: Colors.white,
               ),
               onPressed: _mostrarMedidas,
-              child: Text('Mostrar Medidas'),
+              child: Text(l10n.showMeasures),
             ),
-
             SizedBox(height: 20),
-
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: Theme.of(context).colorScheme.secondary,
@@ -144,35 +144,33 @@ Widget build(BuildContext context) {
                   MaterialPageRoute(builder: (context) => GaleriaRoscasPage()),
                 );
               },
-              child: Text('Ver Galería de Roscas', 
+              child: Text(l10n.viewThreadGallery, 
                 style: TextStyle(color: Colors.white)),
-              ),
-            
+            ),
             SizedBox(height: 15),
-
             if (_medidasActuales != null)
               Column(
                 children: [
-                  Text('Medidas de la rosca:', style: TextStyle(fontWeight: FontWeight.bold),),
+                  Text(l10n.threadMeasuresTitle, 
+                       style: TextStyle(fontWeight: FontWeight.bold)),
                   SizedBox(height: 10),
                   DataTable(
                     columnSpacing: 20,
                     columns: [
-                      DataColumn(label: Text('Medida')),
-                      DataColumn(label: Text(' Valor')),
+                      DataColumn(label: Text(l10n.measure)),
+                      DataColumn(label: Text(l10n.value)),
                     ],
                     rows: [
-                    DataRow(cells: [DataCell(Text(' A')), DataCell(Text('${_medidasActuales!['A']} mm'))]),
-                    DataRow(cells: [DataCell(Text(' B')), DataCell(Text('${_medidasActuales!['B']} mm'))]),
-                    DataRow(cells: [DataCell(Text(' C')), DataCell(Text('${_medidasActuales!['C']} mm'))]),
-                    DataRow(cells: [DataCell(Text(' D')), DataCell(Text('${_medidasActuales!['D']} mm'))]),
-                    DataRow(cells: [DataCell(Text(' E')), DataCell(Text('${_medidasActuales!['E']} mm'))]),
-                    DataRow(cells: [DataCell(Text(' F')), DataCell(Text('${_medidasActuales!['F']} mm'))]),
-                    DataRow(cells: [DataCell(Text(' d')), DataCell(Text('${_medidasActuales!['d']} mm'))]),
-                    DataRow(cells: [DataCell(Text('Peso')), DataCell(Text('${_medidasActuales!['Peso']} kg/m'))])
+                      DataRow(cells: [DataCell(Text(' A')), DataCell(Text('${_medidasActuales!['A']} mm'))]),
+                      DataRow(cells: [DataCell(Text(' B')), DataCell(Text('${_medidasActuales!['B']} mm'))]),
+                      DataRow(cells: [DataCell(Text(' C')), DataCell(Text('${_medidasActuales!['C']} mm'))]),
+                      DataRow(cells: [DataCell(Text(' D')), DataCell(Text('${_medidasActuales!['D']} mm'))]),
+                      DataRow(cells: [DataCell(Text(' E')), DataCell(Text('${_medidasActuales!['E']} mm'))]),
+                      DataRow(cells: [DataCell(Text(' F')), DataCell(Text('${_medidasActuales!['F']} mm'))]),
+                      DataRow(cells: [DataCell(Text(' d')), DataCell(Text('${_medidasActuales!['d']} mm'))]),
+                      DataRow(cells: [DataCell(Text(l10n.weight)), DataCell(Text('${_medidasActuales!['Peso']} kg/m'))])
                     ]),
-
-            SizedBox(height: 20),
+                  SizedBox(height: 20),
                 ]
               ),
           ],
@@ -184,6 +182,7 @@ Widget build(BuildContext context) {
 
 
 class GaleriaRoscasPage extends StatefulWidget {
+  const GaleriaRoscasPage({super.key});
   @override
   GaleriaRoscasPageState createState() => GaleriaRoscasPageState();
 }
@@ -244,11 +243,13 @@ class GaleriaRoscasPageState extends State<GaleriaRoscasPage> {
     });
   }
 
-  @override
+@override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       appBar: AppBar(
-        title: Text('Galería de Roscas API'),
+        title: Text(l10n.threadGallery),
       ),
       body: Column(
         children: [
@@ -256,7 +257,7 @@ class GaleriaRoscasPageState extends State<GaleriaRoscasPage> {
             padding: const EdgeInsets.all(8.0),
             child: TextField(
               decoration: InputDecoration(
-                labelText: 'Buscar imagen',
+                labelText: l10n.searchImage,
                 prefixIcon: Icon(Icons.search),
                 border: OutlineInputBorder(),
               ),
@@ -288,7 +289,7 @@ class GaleriaRoscasPageState extends State<GaleriaRoscasPage> {
           ),
           Expanded(
             child: imagenesFiltradas.isEmpty
-                ? Center(child: Text('No se encontraron imágenes'))
+                ? Center(child: Text(l10n.noImagesFound))
                 : GridView.builder(
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2, // 2 columnas
@@ -318,7 +319,7 @@ class GaleriaRoscasPageState extends State<GaleriaRoscasPage> {
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
                                     Icon(Icons.error, color: Colors.red),
-                                    Text('Imagen no encontrada'),
+                                    Text(l10n.noImagesFound),
                                     Text(imagenesFiltradas[index]),
                                   ],
                                 ),
@@ -343,6 +344,8 @@ class DetalleImagenPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       appBar: AppBar(
         title: Text(imagenPath),
@@ -360,7 +363,7 @@ class DetalleImagenPage extends StatelessWidget {
                 children: [
                   Icon(Icons.error, size: 50, color: Colors.red),
                   SizedBox(height: 20),
-                  Text('No se pudo cargar la imagen:'),
+                  Text('${l10n.imageNotFound}:'),
                   Text(imagenPath),
                 ],
               );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'dart:math';
 
 class PullStressHDPEPage extends StatefulWidget {
@@ -15,20 +16,20 @@ class PullStressHDPEPageState extends State<PullStressHDPEPage> {
   String _errorMessage = '';
 
   final Map<String, double> resistenciaMaterial = {
-    'PE100': 25.0, // MPa (valor típico según normas)
-    'PE80': 20.0,  // MPa (valor típico según normas)
+    'PE100': 25.0,
+    'PE80': 20.0,
   };
 
   void _calcularResistencia() {
     setState(() {
       if (_diametroExterno <= 0 || _espesorPared <= 0) {
-        _errorMessage = 'Ingrese valores válidos mayores a cero';
+        _errorMessage = AppLocalizations.of(context)!.invalidValuesError;
         _resultado = 0.0;
         return;
       }
       
       if (_espesorPared >= _diametroExterno / 2) {
-        _errorMessage = 'El espesor no puede ser mayor o igual al radio';
+        _errorMessage = AppLocalizations.of(context)!.thicknessError;
         _resultado = 0.0;
         return;
       }
@@ -42,9 +43,11 @@ class PullStressHDPEPageState extends State<PullStressHDPEPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       appBar: AppBar(
-        title: Text('Resistencia a la Tracción HDPE'),
+        title: Text(l10n.hdpePullStrengthCalculator),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: LayoutBuilder(
@@ -58,9 +61,8 @@ class PullStressHDPEPageState extends State<PullStressHDPEPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // Imagen representativa
                   Image.asset(
-                    'assets/icon/pipeline.png', // Asegúrate de tener esta imagen en assets
+                    'assets/icon/pipeline.png',
                     height: 150,
                     fit: BoxFit.contain,
                     errorBuilder: (context, error, stackTrace) => Icon(
@@ -71,10 +73,8 @@ class PullStressHDPEPageState extends State<PullStressHDPEPage> {
                   ),
                   SizedBox(height: 20),
                   
-                  // Descripción
                   Text(
-                    'Calcula la resistencia máxima a la tracción que puede soportar una tubería HDPE '
-                    'basado en su diámetro, espesor y tipo de material.',
+                    l10n.hdpeDescription,
                     style: TextStyle(fontSize: 16),
                     textAlign: TextAlign.center,
                   ),
@@ -98,7 +98,7 @@ class PullStressHDPEPageState extends State<PullStressHDPEPage> {
                       items: resistenciaMaterial.keys.map((String key) {
                         return DropdownMenuItem<String>(
                           value: key,
-                          child: Text('Material: $key (${resistenciaMaterial[key]} MPa)'),
+                          child: Text('${l10n.materialType}: $key (${resistenciaMaterial[key]} MPa)'),
                         );
                       }).toList(),
                       onChanged: (value) {
@@ -113,7 +113,7 @@ class PullStressHDPEPageState extends State<PullStressHDPEPage> {
                   // Campo de diámetro externo
                   TextField(
                     decoration: InputDecoration(
-                      labelText: 'Diámetro Externo (mm)',
+                      labelText: l10n.outerDiameterPS,
                       border: OutlineInputBorder(),
                     ),
                     keyboardType: TextInputType.numberWithOptions(decimal: true),
@@ -126,7 +126,7 @@ class PullStressHDPEPageState extends State<PullStressHDPEPage> {
                   Padding(
                     padding: EdgeInsets.only(top: 4, left: 12),
                     child: Text(
-                      'Ejemplo: 250 mm para tubería de 10"',
+                      l10n.exampleDiameter,
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.grey[600],
@@ -138,7 +138,7 @@ class PullStressHDPEPageState extends State<PullStressHDPEPage> {
                   // Campo de espesor de pared
                   TextField(
                     decoration: InputDecoration(
-                      labelText: 'Espesor de Pared (mm)',
+                      labelText: l10n.wallThickness,
                       border: OutlineInputBorder(),
                     ),
                     keyboardType: TextInputType.numberWithOptions(decimal: true),
@@ -151,7 +151,7 @@ class PullStressHDPEPageState extends State<PullStressHDPEPage> {
                   Padding(
                     padding: EdgeInsets.only(top: 4, left: 12),
                     child: Text(
-                      'Ejemplo: 14.8 mm para DR11 (PE100)',
+                      l10n.exampleThickness,
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.grey[600],
@@ -160,7 +160,7 @@ class PullStressHDPEPageState extends State<PullStressHDPEPage> {
                   ),
                   SizedBox(height: 20),
                   
-                  // Botón de cálculo
+
                   ElevatedButton(
                     onPressed: _calcularResistencia,
                     style: ElevatedButton.styleFrom(
@@ -172,7 +172,7 @@ class PullStressHDPEPageState extends State<PullStressHDPEPage> {
                       ),
                     ),
                     child: Text(
-                      'CALCULAR RESISTENCIA',
+                      l10n.calculateStrength,
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
@@ -211,23 +211,24 @@ class PullStressHDPEPageState extends State<PullStressHDPEPage> {
                       child: Column(
                         children: [
                           Text(
-                            'RESISTENCIA MÁXIMA A LA TRACCIÓN',
+                            l10n.maxTensileStrength,
                             style: TextStyle(
                               fontSize: 16,
-                              color:Colors.white,
+                              color: Colors.white,
                             ),
                           ),
                           SizedBox(height: 8),
                           Text(
-                            '${_resultado.toStringAsFixed(2)} N',
+                            l10n.newtons(_resultado.toStringAsFixed(2)),
                             style: TextStyle(
                               fontSize: 28,
                               fontWeight: FontWeight.bold,
                               color: Theme.of(context).colorScheme.tertiary,
                             ),
                           ),
+
                           Text(
-                            '${(_resultado / 1000).toStringAsFixed(2)} kN', // Conversión a kN
+                            l10n.kilonewtons((_resultado / 1000).toStringAsFixed(2)),
                             style: TextStyle(
                               fontSize: 18,
                               color: Theme.of(context).colorScheme.tertiary,
@@ -241,7 +242,7 @@ class PullStressHDPEPageState extends State<PullStressHDPEPage> {
                   // Ficha técnica
                   ExpansionTile(
                     title: Text(
-                      'Información Técnica',
+                      l10n.technicalInfo,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         color: Theme.of(context).colorScheme.onSurface,
@@ -254,7 +255,7 @@ class PullStressHDPEPageState extends State<PullStressHDPEPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              '¿Para qué sirve este cálculo?',
+                              l10n.purposeTitle,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 15,
@@ -262,15 +263,12 @@ class PullStressHDPEPageState extends State<PullStressHDPEPage> {
                             ),
                             SizedBox(height: 8),
                             Text(
-                              '• Determinar la fuerza máxima de jalado (pullback) en instalaciones HDD\n'
-                              '• Prevenir fallas durante la instalación de tuberías\n'
-                              '• Seleccionar el equipo adecuado para el pullback\n'
-                              '• Verificar que la tubería soportará las tensiones de instalación',
+                              l10n.purposePoints,
                               style: TextStyle(height: 1.5),
                             ),
                             SizedBox(height: 16),
                             Text(
-                              'Fórmula utilizada:',
+                              l10n.formulaTitle,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 15,
@@ -278,17 +276,12 @@ class PullStressHDPEPageState extends State<PullStressHDPEPage> {
                             ),
                             SizedBox(height: 8),
                             Text(
-                              'Resistencia (N) = Esfuerzo de Tracción (MPa) × Área Transversal (mm²)\n'
-                              'Área = π × (DE - e) × e\n\n'
-                              'Donde:\n'
-                              'DE = Diámetro externo (mm)\n'
-                              'e = Espesor de pared (mm)\n'
-                              'π = 3.1416',
+                              l10n.formulaText,
                               style: TextStyle(height: 1.5),
                             ),
                             SizedBox(height: 16),
                             Text(
-                              'Recomendaciones:',
+                              l10n.recommendationsTitle,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 15,
@@ -296,11 +289,7 @@ class PullStressHDPEPageState extends State<PullStressHDPEPage> {
                             ),
                             SizedBox(height: 8),
                             Text(
-                              '• Use factor de seguridad mínimo 2:1 (resistencia ≥ 2 × fuerza estimada)\n'
-                              '• Para suelos abrasivos use 3:1\n'
-                              '• PE100 tiene ≈25% más resistencia que PE80\n'
-                              '• Considere reducción de resistencia por temperatura (>20°C)\n'
-                              '• Verifique siempre las especificaciones del fabricante',
+                              l10n.recommendationsText,
                               style: TextStyle(height: 1.5),
                             ),
                           ],

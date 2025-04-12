@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'dart:math';
 import 'package:fl_chart/fl_chart.dart';
 
@@ -106,27 +107,28 @@ void _calcularROP({bool advanced = false}) {
     return Colors.green;
   }
 
-  String _getRopInterpretation(double rop) {
-    if (rop <= 0) return 'DATOS INVÁLIDOS';
-    if (rop < 5) return 'ROP MUY LENTO - Revisar parámetros';
-    if (rop < 15) return 'ROP MODERADO - Puede mejorar';
-    if (rop < 30) return 'ROP BUENO - Rendimiento óptimo';
-    return 'ROP EXCELENTE - Máxima eficiencia';
+  String _getRopInterpretation(double rop, AppLocalizations l10n) {
+    if (rop <= 0) return l10n.invalidData;
+    if (rop < 5) return l10n.verySlowROP;
+    if (rop < 15) return l10n.moderateROP;
+    if (rop < 30) return l10n.goodROP;
+    return l10n.excellentROP;
   }
 
-  String _getTiempoBarraInterpretation(double tiempo) {
-    if (tiempo <= 0) return 'TIEMPO NO CALCULABLE';
-    if (tiempo > 10) return 'TIEMPO EXCESIVO - Revisar operación';
-    if (tiempo > 5) return 'TIEMPO ALTO - Evaluar mejoras';
-    if (tiempo > 2) return 'TIEMPO ACEPTABLE - Buen rendimiento';
-    return 'TIEMPO ÓPTIMO - Máxima eficiencia';
+  String _getTiempoBarraInterpretation(double tiempo, AppLocalizations l10n) {
+    if (tiempo <= 0) return l10n.timeNotCalculable;
+    if (tiempo > 10) return l10n.excessiveTime;
+    if (tiempo > 5) return l10n.highTime;
+    if (tiempo > 2) return l10n.acceptableTime;
+    return l10n.optimalTime;
   }
 
-  @override
-  Widget build(BuildContext context) {
+@override
+Widget build(BuildContext context) {
+  final l10n = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Calculadora ROP - Perf. Horizontal'),
+        title: Text(l10n.ropCalculator),
         backgroundColor: Colors.black,
       ),
       body: SingleChildScrollView(
@@ -142,7 +144,7 @@ void _calcularROP({bool advanced = false}) {
                 child: Column(
                   children: [
                     Text(
-                      'Parámetros Básicos',
+                      l10n.basicParameters,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -150,11 +152,11 @@ void _calcularROP({bool advanced = false}) {
                       ),
                     ),
                     SizedBox(height: 16),
-                    _buildInputField(_diametroMayorController, 'Diámetro mayor (mm)'),
-                    _buildInputField(_diametroAnteriorController, 'Diámetro anterior (mm)'),
-                    _buildInputField(_longitudBarraController, 'Longitud de barra (m)'),
-                    _buildInputField(_caudalTriplexController, 'Caudal tríplex (lts/min)'),
-                    _buildInputField(_factorController, 'Factor de limpieza (0-7)'),
+                    _buildInputField(_diametroMayorController, l10n.majorDiameter),
+                    _buildInputField(_diametroAnteriorController, l10n.previousDiameter),
+                    _buildInputField(_longitudBarraController, l10n.rodLength),
+                    _buildInputField(_caudalTriplexController, l10n.triplexFlow),
+                    _buildInputField(_factorController, l10n.cleaningFactor),
                   ],
                 ),
               ),
@@ -163,7 +165,7 @@ void _calcularROP({bool advanced = false}) {
             SizedBox(height: 16),
 
             // Botón para mostrar/ocultar parámetros avanzados
-            Container(
+          Container(
               padding: EdgeInsets.symmetric(horizontal: 16),
               width: double.infinity,
               child: TextButton(
@@ -176,7 +178,7 @@ void _calcularROP({bool advanced = false}) {
                   ),
                 ),
                 child: Text(
-                  _showAdvanced ? 'OCULTAR AVANZADOS' : 'MOSTRAR PARÁMETROS AVANZADOS',
+                  _showAdvanced ? l10n.hideAdvanced : l10n.showAdvanced,
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -197,7 +199,7 @@ void _calcularROP({bool advanced = false}) {
                   child: Column(
                     children: [
                       Text(
-                        'Parámetros Avanzados',
+                        l10n.advancedParameters,
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -205,8 +207,8 @@ void _calcularROP({bool advanced = false}) {
                         ),
                       ),
                       SizedBox(height: 16),
-                      _buildInputField(_anguloController, 'Ángulo de inclinación (°)'),
-                      _buildInputField(_pesoController, 'Peso sobre barrena (kg)'),
+                      _buildInputField(_anguloController, l10n.inclinationAngle),
+                      _buildInputField(_pesoController, l10n.bitWeight),
                       _buildInputField(_rpmController, 'RPM'),
                     ],
                   ),
@@ -231,7 +233,7 @@ void _calcularROP({bool advanced = false}) {
                         ),
                       ),
                       child: Text(
-                        'ROP BÁSICO',
+                        l10n.basicROP,
                         style: TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.bold,
@@ -254,7 +256,7 @@ void _calcularROP({bool advanced = false}) {
                           ),
                         ),
                         child: Text(
-                          'ROP AVANZADO',
+                          l10n.advancedROP,
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -267,7 +269,7 @@ void _calcularROP({bool advanced = false}) {
             ),
 
             // Sección de resultados
-            if (_resultadoROP > 0) ...[
+           if (_resultadoROP > 0) ...[
               SizedBox(height: 20),
               Card(
                 elevation: 4,
@@ -277,7 +279,7 @@ void _calcularROP({bool advanced = false}) {
                   child: Column(
                     children: [
                       Text(
-                        'RESULTADO ROP: ${_resultadoROP.toStringAsFixed(2)} m/h',
+                        l10n.ropResult(_resultadoROP.toStringAsFixed(2)),
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
@@ -286,14 +288,14 @@ void _calcularROP({bool advanced = false}) {
                       ),
                       SizedBox(height: 16),
                       LinearProgressIndicator(
-                        value: (_resultadoROP / 50).clamp(0.0, 1.0), // Escala hasta 50 m/h
+                        value: (_resultadoROP / 50).clamp(0.0, 1.0),
                         backgroundColor: Colors.grey[800],
                         color: _getRopColor(_resultadoROP),
                         minHeight: 20,
                       ),
                       SizedBox(height: 16),
                       Text(
-                        _getRopInterpretation(_resultadoROP),
+                        _getRopInterpretation(_resultadoROP, l10n),
                         style: TextStyle(
                           fontSize: 16,
                           color: _getRopColor(_resultadoROP),
@@ -304,7 +306,7 @@ void _calcularROP({bool advanced = false}) {
                       Divider(color: Colors.grey),
                       SizedBox(height: 10),
                       Text(
-                        'TIEMPO ESTIMADO POR BARRA: ${_tiempoPorBarra.toStringAsFixed(2)} min/barra',
+                        l10n.estimatedTime(_tiempoPorBarra.toStringAsFixed(2)),
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -313,7 +315,7 @@ void _calcularROP({bool advanced = false}) {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        _getTiempoBarraInterpretation(_tiempoPorBarra),
+                        _getTiempoBarraInterpretation(_tiempoPorBarra, l10n),
                         style: TextStyle(
                           fontSize: 16,
                           color: _tiempoPorBarra > 5 ? Colors.orange : Colors.lightGreen,
@@ -322,7 +324,7 @@ void _calcularROP({bool advanced = false}) {
                       ),
                       SizedBox(height: 10),
                       Text(
-                        'BARRAS POR HORA: ${(_tiempoPorBarra > 0 ? (60 / _tiempoPorBarra).toStringAsFixed(2) : "N/A")}',
+                        l10n.rodsPerHour(_tiempoPorBarra > 0 ? (60 / _tiempoPorBarra).toStringAsFixed(2) : "N/A"),
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.white,
@@ -336,7 +338,7 @@ void _calcularROP({bool advanced = false}) {
               SizedBox(height: 20),
 
               // Gráfico de tendencia
-              Card(
+             Card(
                 elevation: 4,
                 color: Colors.grey[900],
                 child: Padding(
@@ -344,7 +346,7 @@ void _calcularROP({bool advanced = false}) {
                   child: Column(
                     children: [
                       Text(
-                        'Tendencia del ROP',
+                        l10n.ropTrend,
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -372,12 +374,12 @@ void _calcularROP({bool advanced = false}) {
                                   },
                                 ),
                               ),
-                              bottomTitles: AxisTitles(
+                             bottomTitles: AxisTitles(
                                 sideTitles: SideTitles(
                                   showTitles: true,
                                   getTitlesWidget: (value, meta) {
                                     return Text(
-                                      'Cálc. ${value.toInt() + 1}',
+                                      l10n.calculation((value.toInt() + 1).toString()), // Forma correcta
                                       style: TextStyle(
                                         color: Colors.white,
                                         fontSize: 10,

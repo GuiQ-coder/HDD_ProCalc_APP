@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MakeupPage extends StatefulWidget {
   const MakeupPage({super.key});
@@ -9,7 +10,6 @@ class MakeupPage extends StatefulWidget {
 class MakeupPageState extends State<MakeupPage> {
   String _selectedSize = '2 3/8"';
   
-  // Datos extraídos del PDF PipeTables.pdf
   final Map<String, Map<String, dynamic>> _pipeData = {
     '2 3/8"': {
       'Common Connections': ['NC26', 'HT26', 'SLH90'],
@@ -71,16 +71,17 @@ class MakeupPageState extends State<MakeupPage> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       appBar: AppBar(
-        title: Text('Makeup Torque Specifications'),
+        title: Text(l10n.makeupTorqueSpecs),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            // Selector de tamaño
             Container(
               padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
               decoration: BoxDecoration(
@@ -107,7 +108,7 @@ class MakeupPageState extends State<MakeupPage> {
             
             SizedBox(height: 20),
             
-            // Tarjeta con los detalles
+
             Card(
               elevation: 4,
               child: Padding(
@@ -142,19 +143,17 @@ class MakeupPageState extends State<MakeupPage> {
             ),
             SizedBox(height: 20),
 
-            // Nota sobre los datos
-            Text('Data extracted from Grant Prideco Drill Pipe Data Tables',
-              style: TextStyle(fontStyle: FontStyle.italic, color: Colors.grey)),
 
+            Text(l10n.dataSource,
+              style: TextStyle(fontStyle: FontStyle.italic, color: Colors.grey)),
 
             SizedBox(height: 20),
               
+
             Text(
-              'Recuerde que las especificaciones pueden varíar segun el fabricante, consulte con su manual.',
+              l10n.manufacturerNote,
               style: TextStyle(color: Theme.of(context).colorScheme.tertiary),
             ),
-
-            
           ],
         ),
       ),

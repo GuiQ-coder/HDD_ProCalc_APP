@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ManejodeTuberiasPage extends StatefulWidget {
   const ManejodeTuberiasPage({super.key});
@@ -33,11 +34,7 @@ class ManejodeTuberiasPageState extends State<ManejodeTuberiasPage> {
       if (diametroExterno > 0 && diametroTubosPequenos > 0) {
         // Validar proporción mínima
         if (diametroTubosPequenos < diametroExterno * 0.05) {
-          _mostrarDialogoAdvertencia(
-            'Proporción no óptima',
-            'El diámetro de los tubos pequeños es menos del 5% del tubo grande. '
-            'El cálculo podría ser impreciso.'
-          );
+          _mostrarDialogoAdvertencia;
         }
 
         // Calcular disposición
@@ -66,22 +63,26 @@ class ManejodeTuberiasPageState extends State<ManejodeTuberiasPage> {
     });
   }
 
-  void _mostrarDialogoAdvertencia(String titulo, String mensaje) {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: Theme.of(context).colorScheme.surface,
-        title: Text(titulo, style: TextStyle(color: Theme.of(context).colorScheme.onSurface)),
-        content: Text(mensaje, style: TextStyle(color: Theme.of(context).colorScheme.onSurface)),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx),
-            child: Text('OK', style: TextStyle(color: Theme.of(context).colorScheme.tertiary)),
-          ),
-        ],
-      ),
-    );
-  }
+  void _mostrarDialogoAdvertencia() {
+      final l10n = AppLocalizations.of(context)!;
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          backgroundColor: Theme.of(context).colorScheme.surface,
+          title: Text(l10n.suboptimalProportion, 
+                style: TextStyle(color: Theme.of(context).colorScheme.onSurface)),
+          content: Text(l10n.proportionWarning, 
+                    style: TextStyle(color: Theme.of(context).colorScheme.onSurface)),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(ctx),
+              child: Text('OK', 
+                    style: TextStyle(color: Theme.of(context).colorScheme.tertiary)),
+            ),
+          ],
+        ),
+      );
+    }
 
   void _calcularDisposicionTubos() {
     _tubosPosiciones.clear();
@@ -139,11 +140,13 @@ class ManejodeTuberiasPageState extends State<ManejodeTuberiasPage> {
     _ratioArea = (_areaTotalPequena / _areaGrande) * 100;
   }
 
-  @override
+   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+    
     return Scaffold(
       appBar: AppBar(
-        title: Text('Calculadora de Tuberías'),
+        title: Text(l10n.pipeCalculator),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
       body: SingleChildScrollView(
@@ -157,7 +160,7 @@ class ManejodeTuberiasPageState extends State<ManejodeTuberiasPage> {
                 child: Column(
                   children: [
                     Text(
-                      'Configuración de Tuberías',
+                      l10n.pipeConfiguration,
                       style: TextStyle(
                         fontSize: 18,
                         color: Theme.of(context).colorScheme.onSurface,
@@ -168,7 +171,7 @@ class ManejodeTuberiasPageState extends State<ManejodeTuberiasPage> {
                     TextField(
                       controller: _diametroExternoController,
                       decoration: InputDecoration(
-                        labelText: 'Diámetro del tubo exterior (mm)',
+                        labelText: l10n.outerPipeDiameter,
                         labelStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface),
                       ),
                       style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
@@ -178,7 +181,7 @@ class ManejodeTuberiasPageState extends State<ManejodeTuberiasPage> {
                     TextField(
                       controller: _diametroPequenosController,
                       decoration: InputDecoration(
-                        labelText: 'Diámetro de los tubos pequeños (mm)',
+                        labelText: l10n.smallPipesDiameter,
                         labelStyle: TextStyle(color: Theme.of(context).colorScheme.onSurface),
                       ),
                       style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
@@ -192,7 +195,7 @@ class ManejodeTuberiasPageState extends State<ManejodeTuberiasPage> {
                         padding: EdgeInsets.symmetric(vertical: 16, horizontal: 16),
                       ),
                       child: Text(
-                        'CALCULAR',
+                        l10n.calculate,
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.onSecondary,
                           fontWeight: FontWeight.bold,
@@ -214,22 +217,22 @@ class ManejodeTuberiasPageState extends State<ManejodeTuberiasPage> {
                     children: [
                       Center(
                         child: Text(
-                          'RESULTADOS',
+                          l10n.results,
                           style: TextStyle(
                             fontSize: 18,
-                            color:Colors.white,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
                       Divider(color: Colors.white),
                       SizedBox(height: 10),
-                      _buildResultRow('Número máximo de tubos pequeños:', '$_cantidadTubosTotales'),
+                      _buildResultRow(l10n.maxSmallPipes, '$_cantidadTubosTotales'),
                       if (_mostrarAdvertencia)
                         Padding(
                           padding: EdgeInsets.only(top: 8),
                           child: Text(
-                            '(Mostrando solo los primeros 150 para visualización)',
+                            l10n.showingFirst150,
                             style: TextStyle(
                               color: Colors.orange[300],
                               fontSize: 12,
@@ -237,15 +240,15 @@ class ManejodeTuberiasPageState extends State<ManejodeTuberiasPage> {
                           ),
                         ),
                       SizedBox(height: 8),
-                      _buildResultRow('Distribución por anillos:', _tubosPorAnillo.join(", ")),
+                      _buildResultRow(l10n.ringDistribution, _tubosPorAnillo.join(", ")),
                       SizedBox(height: 8),
-                      _buildResultRow('Área del tubo grande:', '${_areaGrande.toStringAsFixed(2)} mm²'),
+                      _buildResultRow(l10n.outerPipeArea, '${_areaGrande.toStringAsFixed(2)} mm²'),
                       SizedBox(height: 8),
-                      _buildResultRow('Área de un tubo pequeño:', '${_areaPequena.toStringAsFixed(2)} mm²'),
+                      _buildResultRow(l10n.singleSmallPipeArea, '${_areaPequena.toStringAsFixed(2)} mm²'),
                       SizedBox(height: 8),
-                      _buildResultRow('Área total de tubos pequeños:', '${_areaTotalPequena.toStringAsFixed(2)} mm²'),
+                      _buildResultRow(l10n.totalSmallPipesArea, '${_areaTotalPequena.toStringAsFixed(2)} mm²'),
                       SizedBox(height: 8),
-                      _buildResultRow('Ratio de área:', '${_ratioArea.toStringAsFixed(1)}%'),
+                      _buildResultRow(l10n.areaRatio, '${_ratioArea.toStringAsFixed(1)}%'),
                     ],
                   ),
                 ),
@@ -258,7 +261,7 @@ class ManejodeTuberiasPageState extends State<ManejodeTuberiasPage> {
                   child: Column(
                     children: [
                       Text(
-                        'DISPOSICIÓN DE TUBERÍAS', 
+                        l10n.pipeArrangement, 
                         style: TextStyle(
                           fontSize: 16,
                           color: Colors.white,
@@ -289,6 +292,7 @@ class ManejodeTuberiasPageState extends State<ManejodeTuberiasPage> {
       ),
     );
   }
+
 
   Widget _buildResultRow(String label, String value) {
     return Row(

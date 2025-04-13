@@ -42,15 +42,20 @@ class PullStressHDPEPageState extends State<PullStressHDPEPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context)!;
-    
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(l10n.hdpePullStrengthCalculator),
-        backgroundColor: Theme.of(context).colorScheme.primary,
-      ),
-      body: LayoutBuilder(
+Widget build(BuildContext context) {
+  final l10n = AppLocalizations.of(context)!;
+  
+  return Scaffold(
+    appBar: AppBar(
+      title: Text(l10n.hdpePullStrengthCalculator),
+      backgroundColor: Theme.of(context).colorScheme.primary,
+    ),
+    body: GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
+      },
+      behavior: HitTestBehavior.opaque,
+      child: LayoutBuilder(
         builder: (context, constraints) {
           return SingleChildScrollView(
             padding: const EdgeInsets.all(16.0),
@@ -303,6 +308,6 @@ class PullStressHDPEPageState extends State<PullStressHDPEPage> {
           );
         },
       ),
-    );
+    ));
   }
 }

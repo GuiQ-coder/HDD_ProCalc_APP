@@ -28,7 +28,12 @@ class RadioCurvaturaPageState extends State<RadioCurvaturaPage> {
         title: Text('Radio de Curvatura'),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
-      body: Padding(
+            body: GestureDetector(
+        onTap: () {
+        FocusScope.of(context).unfocus();
+        },
+        behavior: HitTestBehavior.opaque,
+        child: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
@@ -99,6 +104,6 @@ class RadioCurvaturaPageState extends State<RadioCurvaturaPage> {
           ],
         ),
       ),
-    );
+    ));
   }
 }

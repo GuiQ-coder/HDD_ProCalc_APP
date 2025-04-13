@@ -12,8 +12,13 @@ class RadioCurvaturaPageState extends State<RadioCurvaturaPage> {
   double _radioCurvatura = 0.0;
   double _gradosPorTubo = 0.0;
   double _porcentajePorBarra = 0.0;
+  final FocusNode _diametroFocusNode = FocusNode();
+  final FocusNode _longitudFocusNode = FocusNode();
 
   void _calcular() {
+    // Cerrar el teclado al calcular
+    FocusManager.instance.primaryFocus?.unfocus();
+    
     setState(() {
       _radioCurvatura = _diametro * 1000 / (2 * 3.1416);
       _gradosPorTubo = 360 / (_longitudTubo / _radioCurvatura);
@@ -22,88 +27,173 @@ class RadioCurvaturaPageState extends State<RadioCurvaturaPage> {
   }
 
   @override
+  void dispose() {
+    _diametroFocusNode.dispose();
+    _longitudFocusNode.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    
     return Scaffold(
       appBar: AppBar(
-        title: Text('Radio de Curvatura'),
-        backgroundColor: Theme.of(context).colorScheme.primary,
+        title: const Text('Radio de Curvatura'),
+        backgroundColor: theme.colorScheme.primary,
       ),
-            body: GestureDetector(
+      body: GestureDetector(
         onTap: () {
-        FocusScope.of(context).unfocus();
+          FocusScope.of(context).unfocus();
         },
         behavior: HitTestBehavior.opaque,
         child: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            
-                  Image.asset(
-                    'assets/icon/radiocurvatura.png',
-                    height: 180,
-                    fit: BoxFit.contain,
-                    errorBuilder: (context, error, stackTrace) => Icon(
-                      Icons.circle_outlined,
-                      size: 100,
-                      color: Colors.blue,
-                    ),
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              Image.asset(
+                'assets/icon/radiocurvatura.png',
+                height: 180,
+                fit: BoxFit.contain,
+                errorBuilder: (context, error, stackTrace) => Icon(
+                  Icons.circle_outlined,
+                  size: 100,
+                  color: theme.colorScheme.tertiary,
+                ),
+              ),
+              const SizedBox(height: 16),
+              
+              // Campo de diámetro
+              TextField(
+                focusNode: _diametroFocusNode,
+                decoration: InputDecoration(
+                  labelText: 'Diámetro (pulgadas)',
+                  labelStyle: TextStyle(color: theme.colorScheme.onSurface),
+                  border: OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: theme.colorScheme.tertiary),
                   ),
-
-                  SizedBox(height: 16),
-            TextField(
-              decoration: InputDecoration(labelText: 'Diámetro (pulgadas)'),
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
-              onChanged: (value) {
-                setState(() {
-                  _diametro = double.tryParse(value) ?? 0.0;
-                });
-              },
-            ),
-            TextField(
-              decoration: InputDecoration(labelText: 'Longitud del tubo (metros)'),
-              keyboardType: TextInputType.numberWithOptions(decimal: true),
-              onChanged: (value) {
-                setState(() {
-                  _longitudTubo = double.tryParse(value) ?? 0.0;
-                });
-              },
-            ),
-          SizedBox(height: 20),
-
-           ElevatedButton(
-            onPressed: _calcular,
-            style: ElevatedButton.styleFrom(
-               backgroundColor: Theme.of(context).colorScheme.secondary,
-               foregroundColor: Colors.white,
-               padding: EdgeInsets.symmetric(vertical: 16, horizontal: 12),
-               shape: RoundedRectangleBorder(
-                 borderRadius: BorderRadius.circular(8),
-               ),
-             ),
-             child: Text(
-               'CALCULAR',
-               style: TextStyle(
-                 fontSize: 16,
-                 fontWeight: FontWeight.bold,
-               ),
-            ),
+                ),
+                keyboardType: TextInputType.numberWithOptions(
+                  signed: false,
+                  decimal: true
+                ),
+                textInputAction: TextInputAction.next,
+                onChanged: (value) {
+                  setState(() {
+                    _diametro = double.tryParse(value) ?? 0.0;
+                  });
+                },
+                onSubmitted: (_) {
+                  _diametroFocusNode.unfocus();
+                  FocusScope.of(context).requestFocus(_longitudFocusNode);
+                },
+              ),
+              const SizedBox(height: 16),
+              
+              // Campo de longitud
+              TextField(
+                focusNode: _longitudFocusNode,
+                decoration: InputDecoration(
+                  labelText: 'Longitud del tubo (metros)',
+                  labelStyle: TextStyle(color: theme.colorScheme.onSurface),
+                  border: OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: theme.colorScheme.tertiary),
+                  ),
+                ),
+                keyboardType: TextInputType.numberWithOptions(
+                  signed: false,
+                  decimal: true
+                ),
+                textInputAction: TextInputAction.done,
+                onChanged: (value) {
+                  setState(() {
+                    _longitudTubo = double.tryParse(value) ?? 0.0;
+                  });
+                },
+                onSubmitted: (_) {
+                  _longitudFocusNode.unfocus();
+                  _calcular();
+                },
+              ),
+              const SizedBox(height: 20),
+              
+              // Botón de cálculo
+              ElevatedButton(
+                onPressed: _calcular,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: theme.colorScheme.secondary,
+                  foregroundColor: theme.colorScheme.onSecondary,
+                  padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  elevation: 4,
+                ),
+                child: const Text(
+                  'CALCULAR',
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              
+              // Resultados
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: theme.colorScheme.surface.withOpacity(0.8),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: theme.colorScheme.tertiary.withOpacity(0.5),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      'RESULTADOS',
+                      style: theme.textTheme.titleLarge?.copyWith(
+                        color: theme.colorScheme.tertiary,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    _buildResultItem('Radio de curvatura:', '${_radioCurvatura.toStringAsFixed(2)} m', theme),
+                    _buildResultItem('Grados por tubo:', '${_gradosPorTubo.toStringAsFixed(2)}°', theme),
+                    _buildResultItem('Porcentaje por barra:', '${_porcentajePorBarra.toStringAsFixed(2)}%', theme),
+                  ],
+                ),
+              ),
+            ],
           ),
-          SizedBox(height: 16),
-            Text(
-              'Radio de curvatura: ${_radioCurvatura.toStringAsFixed(2)} m',
-              style: TextStyle(fontSize: 18),
-            ),
-            Text(
-              'Grados por tubo: ${_gradosPorTubo.toStringAsFixed(2)}°',
-              style: TextStyle(fontSize: 18),
-            ),
-            Text(
-              'Porcentaje por barra: ${_porcentajePorBarra.toStringAsFixed(2)}%',
-              style: TextStyle(fontSize: 18),
-            ),
-          ],
         ),
       ),
-    ));
+    );
+  }
+
+  Widget _buildResultItem(String label, String value, ThemeData theme) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            label,
+            style: theme.textTheme.bodyLarge?.copyWith(
+              color: theme.colorScheme.onSurface.withOpacity(0.8),
+            ),
+          ),
+          Text(
+            value,
+            style: theme.textTheme.bodyLarge?.copyWith(
+              color: theme.colorScheme.tertiary,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }

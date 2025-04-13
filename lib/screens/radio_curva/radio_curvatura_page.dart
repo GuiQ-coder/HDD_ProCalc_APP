@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RadioCurvaturaPage extends StatefulWidget {
   const RadioCurvaturaPage({super.key});
@@ -16,9 +17,7 @@ class RadioCurvaturaPageState extends State<RadioCurvaturaPage> {
   final FocusNode _longitudFocusNode = FocusNode();
 
   void _calcular() {
-    // Cerrar el teclado al calcular
     FocusManager.instance.primaryFocus?.unfocus();
-    
     setState(() {
       _radioCurvatura = _diametro * 1000 / (2 * 3.1416);
       _gradosPorTubo = 360 / (_longitudTubo / _radioCurvatura);
@@ -36,16 +35,15 @@ class RadioCurvaturaPageState extends State<RadioCurvaturaPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
     
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Radio de Curvatura'),
+        title: Text(l10n.radiusOfCurvatureTitle),
         backgroundColor: theme.colorScheme.primary,
       ),
       body: GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus();
-        },
+        onTap: () => FocusScope.of(context).unfocus(),
         behavior: HitTestBehavior.opaque,
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(16.0),
@@ -59,6 +57,7 @@ class RadioCurvaturaPageState extends State<RadioCurvaturaPage> {
                   Icons.circle_outlined,
                   size: 100,
                   color: theme.colorScheme.tertiary,
+                  semanticLabel: l10n.errorIconDescription,
                 ),
               ),
               const SizedBox(height: 16),
@@ -67,9 +66,9 @@ class RadioCurvaturaPageState extends State<RadioCurvaturaPage> {
               TextField(
                 focusNode: _diametroFocusNode,
                 decoration: InputDecoration(
-                  labelText: 'Diámetro (pulgadas)',
+                  labelText: l10n.diameterInput,
                   labelStyle: TextStyle(color: theme.colorScheme.onSurface),
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: theme.colorScheme.tertiary),
                   ),
@@ -79,11 +78,9 @@ class RadioCurvaturaPageState extends State<RadioCurvaturaPage> {
                   decimal: true
                 ),
                 textInputAction: TextInputAction.next,
-                onChanged: (value) {
-                  setState(() {
-                    _diametro = double.tryParse(value) ?? 0.0;
-                  });
-                },
+                onChanged: (value) => setState(() {
+                  _diametro = double.tryParse(value) ?? 0.0;
+                }),
                 onSubmitted: (_) {
                   _diametroFocusNode.unfocus();
                   FocusScope.of(context).requestFocus(_longitudFocusNode);
@@ -95,9 +92,9 @@ class RadioCurvaturaPageState extends State<RadioCurvaturaPage> {
               TextField(
                 focusNode: _longitudFocusNode,
                 decoration: InputDecoration(
-                  labelText: 'Longitud del tubo (metros)',
+                  labelText: l10n.tubeLengthInput,
                   labelStyle: TextStyle(color: theme.colorScheme.onSurface),
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: theme.colorScheme.tertiary),
                   ),
@@ -107,11 +104,9 @@ class RadioCurvaturaPageState extends State<RadioCurvaturaPage> {
                   decimal: true
                 ),
                 textInputAction: TextInputAction.done,
-                onChanged: (value) {
-                  setState(() {
-                    _longitudTubo = double.tryParse(value) ?? 0.0;
-                  });
-                },
+                onChanged: (value) => setState(() {
+                  _longitudTubo = double.tryParse(value) ?? 0.0;
+                }),
                 onSubmitted: (_) {
                   _longitudFocusNode.unfocus();
                   _calcular();
@@ -131,9 +126,9 @@ class RadioCurvaturaPageState extends State<RadioCurvaturaPage> {
                   ),
                   elevation: 4,
                 ),
-                child: const Text(
-                  'CALCULAR',
-                  style: TextStyle(
+                child: Text(
+                  l10n.calculateButton,
+                  style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                   ),
@@ -154,15 +149,15 @@ class RadioCurvaturaPageState extends State<RadioCurvaturaPage> {
                 child: Column(
                   children: [
                     Text(
-                      'RESULTADOS',
+                      l10n.resultsTitle,
                       style: theme.textTheme.titleLarge?.copyWith(
                         color: theme.colorScheme.tertiary,
                       ),
                     ),
                     const SizedBox(height: 12),
-                    _buildResultItem('Radio de curvatura:', '${_radioCurvatura.toStringAsFixed(2)} m', theme),
-                    _buildResultItem('Grados por tubo:', '${_gradosPorTubo.toStringAsFixed(2)}°', theme),
-                    _buildResultItem('Porcentaje por barra:', '${_porcentajePorBarra.toStringAsFixed(2)}%', theme),
+                    _buildResultItem(l10n.radiusResult, '${_radioCurvatura.toStringAsFixed(2)} m', theme),
+                    _buildResultItem(l10n.degreesPerTube, '${_gradosPorTubo.toStringAsFixed(2)}°', theme),
+                    _buildResultItem(l10n.percentagePerBar, '${_porcentajePorBarra.toStringAsFixed(2)}%', theme),
                   ],
                 ),
               ),

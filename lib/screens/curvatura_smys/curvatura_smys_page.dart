@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class RadioSMYSPage extends StatefulWidget {
   const RadioSMYSPage({super.key});
@@ -19,7 +20,7 @@ class RadioSMYSPageState extends State<RadioSMYSPage> {
   final FocusNode _longitudFocus = FocusNode();
 
   void _calcular() {
-    FocusManager.instance.primaryFocus?.unfocus(); // Cierra el teclado
+    FocusManager.instance.primaryFocus?.unfocus();
     setState(() {
       _radioCurvatura = (_diametro * 1000) / (2 * _limiteCedencia);
       _gradosPorTubo = 360 / (_longitudTubo / _radioCurvatura);
@@ -38,10 +39,11 @@ class RadioSMYSPageState extends State<RadioSMYSPage> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final l10n = AppLocalizations.of(context)!;
     
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Radio por SMYS'),
+        title: Text(l10n.radiusBySMYSTitle),
         backgroundColor: theme.colorScheme.primary,
       ),
       body: GestureDetector(
@@ -59,6 +61,7 @@ class RadioSMYSPageState extends State<RadioSMYSPage> {
                   Icons.circle_outlined,
                   size: 100,
                   color: theme.colorScheme.tertiary,
+                  semanticLabel: l10n.errorIconDescription,
                 ),
               ),
               const SizedBox(height: 16),
@@ -67,9 +70,12 @@ class RadioSMYSPageState extends State<RadioSMYSPage> {
               TextField(
                 focusNode: _diametroFocus,
                 decoration: InputDecoration(
-                  labelText: 'Diámetro (pulgadas)',
+                  labelText: l10n.diameterInput,
                   labelStyle: TextStyle(color: theme.colorScheme.onSurface),
                   border: const OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: theme.colorScheme.tertiary),
+                  ),
                 ),
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
                 textInputAction: TextInputAction.next,
@@ -84,9 +90,12 @@ class RadioSMYSPageState extends State<RadioSMYSPage> {
               TextField(
                 focusNode: _limiteFocus,
                 decoration: InputDecoration(
-                  labelText: 'Límite de cedencia (PSI)',
+                  labelText: l10n.yieldLimitInput,
                   labelStyle: TextStyle(color: theme.colorScheme.onSurface),
                   border: const OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: theme.colorScheme.tertiary),
+                  ),
                 ),
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
                 textInputAction: TextInputAction.next,
@@ -101,9 +110,12 @@ class RadioSMYSPageState extends State<RadioSMYSPage> {
               TextField(
                 focusNode: _longitudFocus,
                 decoration: InputDecoration(
-                  labelText: 'Longitud del tubo (metros)',
+                  labelText: l10n.tubeLengthInput,
                   labelStyle: TextStyle(color: theme.colorScheme.onSurface),
                   border: const OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: theme.colorScheme.tertiary),
+                  ),
                 ),
                 keyboardType: TextInputType.numberWithOptions(decimal: true),
                 textInputAction: TextInputAction.done,
@@ -127,9 +139,9 @@ class RadioSMYSPageState extends State<RadioSMYSPage> {
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),
-                  child: const Text(
-                    'CALCULAR',
-                    style: TextStyle(
+                  child: Text(
+                    l10n.calculateButton,
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
@@ -151,15 +163,15 @@ class RadioSMYSPageState extends State<RadioSMYSPage> {
                 child: Column(
                   children: [
                     Text(
-                      'RESULTADOS',
+                      l10n.resultsTitle,
                       style: theme.textTheme.titleMedium?.copyWith(
                         color: theme.colorScheme.tertiary,
                       ),
                     ),
                     const SizedBox(height: 12),
-                    _buildResultRow('Radio de curvatura:', '${_radioCurvatura.toStringAsFixed(2)} m', theme),
-                    _buildResultRow('Grados por tubo:', '${_gradosPorTubo.toStringAsFixed(2)}°', theme),
-                    _buildResultRow('Porcentaje por barra:', '${_porcentajePorBarra.toStringAsFixed(2)}%', theme),
+                    _buildResultRow(l10n.radiusResult, '${_radioCurvatura.toStringAsFixed(2)} m', theme),
+                    _buildResultRow(l10n.degreesPerTube, '${_gradosPorTubo.toStringAsFixed(2)}°', theme),
+                    _buildResultRow(l10n.percentagePerBar, '${_porcentajePorBarra.toStringAsFixed(2)}%', theme),
                   ],
                 ),
               ),
@@ -176,8 +188,14 @@ class RadioSMYSPageState extends State<RadioSMYSPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(label, style: theme.textTheme.bodyLarge),
-          Text(value, 
+          Text(
+            label,
+            style: theme.textTheme.bodyLarge?.copyWith(
+              color: theme.colorScheme.onSurface.withOpacity(0.8),
+            ),
+          ),
+          Text(
+            value,
             style: theme.textTheme.bodyLarge?.copyWith(
               color: theme.colorScheme.tertiary,
               fontWeight: FontWeight.bold,

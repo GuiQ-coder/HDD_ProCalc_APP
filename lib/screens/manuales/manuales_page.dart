@@ -338,7 +338,7 @@ class ManualesPageState extends State<ManualesPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(l10n.appTitle),
+        title: Text(l10n.manualsTitle),
         backgroundColor: Theme.of(context).colorScheme.primary,
         actions: [
           IconButton(

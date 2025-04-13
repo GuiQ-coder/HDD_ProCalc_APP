@@ -190,7 +190,34 @@
   "storagePermissionMessage": "Para descargar manuales, la app necesita acceso al almacenamiento. Por favor concede el permiso en la configuración del dispositivo.",
   "openSettings": "Abrir configuración",
   "error": "Error",
-  "fileCorrupt": "El archivo está corrupto"
+  "fileCorrupt": "El archivo está corrupto",
+
+  "radiusOfCurvatureTitle": "Radio de Curvatura",
+  "diameterInput": "Diámetro (pulgadas)",
+  "tubeLengthInput": "Longitud del tubo (metros)",
+  "calculateButton": "CALCULAR",
+  "resultsTitle": "RESULTADOS",
+  "radiusResult": "Radio de curvatura:",
+  "degreesPerTube": "Grados por tubo:",
+  "percentagePerBar": "Porcentaje por barra:",
+  "errorIconDescription": "Icono de cálculo de curvatura",
+
+  "radiusBySMYSTitle": "Radio por SMYS",
+  "yieldLimitInput": "Limite de cedencia (PSI)",
+
+  "fullCurveTitle": "Curva Completa",
+  "entryAngleInput": "Ángulo de entrada (grados)",
+  "barLengthInput": "Longitud de barra (metros)",
+  "radiusInput": "Radio (metros)",
+  "requiredDepthInput": "Profundidad requerida (metros)",
+  "resultLabel": "Resultado:",
+
+  "depthByDistanceTitle": "Profundidad por Distancia",
+  "slopeInput": "Pendiente (%)",
+  "distanceInput": "Distancia (metros)",
+  "depthResult": "Profundidad:",
+  "metersUnit": "metros",
+  "hddDiagramDescription": "Diagrama de profundidad-distancia HDD"
   
   }
         

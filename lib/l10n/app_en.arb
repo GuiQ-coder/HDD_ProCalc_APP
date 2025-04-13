@@ -191,5 +191,33 @@
   "storagePermissionMessage": "To download manuals, the app needs storage access. Please grant the permission in device settings.",
   "openSettings": "Open settings",
   "error": "Error",
-  "fileCorrupt": "File is corrupt"
+  "fileCorrupt": "File is corrupt",
+
+  "radiusOfCurvatureTitle": "Radius of Curvature",
+  "diameterInput": "Diameter (inches)",
+  "tubeLengthInput": "Tube length (meters)",
+  "calculateButton": "CALCULATE",
+  "resultsTitle": "RESULTS",
+  "radiusResult": "Radius of curvature:",
+  "degreesPerTube": "Degrees per tube:",
+  "percentagePerBar": "Percentage per bar:",
+  "errorIconDescription": "Curvature calculation icon",
+
+  "radiusBySMYSTitle": "Radius by SMYS",
+  "yieldLimitInput": "Yield limit (PSI)",
+
+  "fullCurveTitle": "Complete Curve",
+  "entryAngleInput": "Entry angle (degrees)",
+  "barLengthInput": "Bar length (meters)",
+  "radiusInput": "Radius (meters)",
+  "requiredDepthInput": "Required depth (meters)",
+  "resultLabel": "Result:",
+
+  "depthByDistanceTitle": "Depth by Distance",
+  "slopeInput": "Slope (%)",
+  "distanceInput": "Distance (meters)",
+  "depthResult": "Depth:",
+  "metersUnit": "meters",
+  "hddDiagramDescription": "HDD depth-distance diagram"
+
 }

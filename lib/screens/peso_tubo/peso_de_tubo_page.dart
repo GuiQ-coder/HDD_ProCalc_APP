@@ -46,7 +46,12 @@ class PesodeTuboPageState extends State<PesodeTuboPage> {
         title: Text(l10n.pipeWeightCalculator),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
-      body: SingleChildScrollView(
+      body: GestureDetector(
+        onTap: () {
+        FocusScope.of(context).unfocus();
+        },
+        behavior: HitTestBehavior.opaque,
+        child: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
@@ -160,6 +165,6 @@ class PesodeTuboPageState extends State<PesodeTuboPage> {
           ],
         ),
       ),
-    );
+    ));
   }
 }

@@ -30,8 +30,6 @@ class MedidasRoscasPageState extends State<MedidasRoscasPage> {
     '6-5/8" A.P.I InternalFlush',
     '7-5/8" A.P.I InternalFlush',
     'Roscas FULL HOLE',
-    '2-3/8" A.P.I Full Hole',
-    '2-7/8" A.P.I Full Hole',
     '3-1/2" A.P.I Full Hole',
     '4" A.P.I Full Hole',    
     '4-1/2" A.P.I Full Hole',
@@ -42,7 +40,7 @@ class MedidasRoscasPageState extends State<MedidasRoscasPage> {
 
   // Mapa con las medidas de cada rosca
   final Map<String, Map<String, double>> medidasRoscas = {
-    'Roscas Regular': {'A': 0, 'B': 0, 'C': 0, 'D': 0, 'E': 0, 'F': 0, 'd': 0, 'Peso': 0},
+
     '2-3/8" A.P.I Regular': {'A': 66.7, 'B': 68.3, 'C': 47.6, 'D': 79.4, 'E': 76.2, 'F': 92.1, 'd': 25.4, 'Peso': 9.82},
     '2-7/8" A.P.I Regular': {'A': 76.2, 'B': 77.8, 'C': 54, 'D': 95.2, 'E': 88.9, 'F': 104.8, 'd': 31.7, 'Peso': 15.47},
     '3-1/2" A.P.I Regular': {'A': 88.9, 'B': 90.5, 'C': 65.1, 'D': 107.9, 'E': 95.2, 'F':111.1, 'd': 38.1, 'Peso': 19.78},
@@ -52,7 +50,7 @@ class MedidasRoscasPageState extends State<MedidasRoscasPage> {
     '6-5/8" A.P.I Regular': {'A': 152.2, 'B': 154.4, 'C': 131, 'D': 196.8, 'E': 127, 'F': 142.9, 'd': 88.9, 'Peso': 37.49},
     '7-5/8" A.P.I Regular': {'A': 177.8, 'B': 180.2, 'C': 144.5, 'D': 225.4, 'E': 133.3, 'F': 142.9, 'd': 101.6, 'Peso': 43.44},
 
-    'Roscas I.F. Internal Flush': {'A': 0, 'B': 0, 'C': 0, 'D': 0, 'E': 0, 'F': 0, 'd': 0, 'Peso': 0},
+
     '2-3/8" A.P.I InternalFlush': {'A': 73.1, 'B': 74.6, 'C': 60.4, 'D': 85.7, 'E': 76.2, 'F': 92.1, 'd': 44.4, 'Peso': 9.82},
     '2-7/8" A.P.I InternalFlush': {'A': 86.1, 'B': 87.7, 'C': 71.3, 'D': 104.8, 'E': 88.9, 'F': 104.98, 'd': 54, 'Peso': 15.47},
     '3-1/2" A.P.I InternalFlush': {'A': 102, 'B': 103.6, 'C': 85.1, 'D': 120.6, 'E': 101.6, 'F':117.5, 'd': 68.3, 'Peso': 19.78},
@@ -61,7 +59,7 @@ class MedidasRoscasPageState extends State<MedidasRoscasPage> {
     '4-1/2" A.P.I InternalFlush': {'A': 133.3, 'B': 134.9, 'C': 114.3, 'D': 155.6, 'E': 114.3, 'F': 130.2, 'd': 95.2, 'Peso': 24.69},
     '4-1/2" A.P.I InternalFlush x': {'A': 133.3, 'B': 134.9, 'C': 114.3, 'D': 158.7, 'E': 114.3, 'F': 130.2, 'd': 95.2, 'Peso': 29.75},    
 
-        'Roscas FULL HOLE': {'A': 0, 'B': 0, 'C': 0, 'D': 0, 'E': 0, 'F': 0, 'd': 0, 'Peso': 0},
+
     '3-1/2" A.P.I Full Hole': {'A': 101.4, 'B': 102.8, 'C': 77.6, 'D': 117.5, 'E': 95.2, 'F':111.1, 'd': 61.9, 'Peso': 19.78},
     '4" A.P.I Full Hole': {'A': 108.4, 'B': 110.3, 'C': 89.7, 'D': 133.3, 'E': 114.3, 'F':130.2, 'd': 71.4, 'Peso': 20.83},
     '4-1/2" A.P.I Full Hole': {'A': 121.7, 'B': 123.8, 'C': 96.3, 'D': 146, 'E': 101.6, 'F': 117.5, 'd': 76.2, 'Peso': 24.69},

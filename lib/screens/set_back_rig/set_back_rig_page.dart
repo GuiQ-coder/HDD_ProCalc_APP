@@ -14,6 +14,8 @@ class SetBackRigPageState extends State<SetBackRigPage> {
   double _result = 0.0;
   bool _isPercentage = false;
   String _errorMessage = '';
+  final FocusNode _diametroExternoFocusNode = FocusNode();
+  final FocusNode _diametroPequenosFocusNode = FocusNode();
 
   void _calculate() {
     setState(() {
@@ -95,6 +97,7 @@ class SetBackRigPageState extends State<SetBackRigPage> {
                     
                     // Campo de ángulo
                     TextField(
+                      focusNode: _diametroExternoFocusNode,
                       decoration: InputDecoration(
                         labelText: _isPercentage 
                             ? l10n.angleInPercentage 
@@ -126,6 +129,7 @@ class SetBackRigPageState extends State<SetBackRigPage> {
                     
                     // Campo de altura
                     TextField(
+                      focusNode: _diametroExternoFocusNode,
                       decoration: InputDecoration(
                         labelText: l10n.entryDepth,
                         border: OutlineInputBorder(),
@@ -140,7 +144,11 @@ class SetBackRigPageState extends State<SetBackRigPage> {
                     SizedBox(height: 20),
                     
                     ElevatedButton(
-                      onPressed: _calculate,
+                      onPressed: () {
+                        FocusScope.of(context).unfocus();
+                        _calculate();
+
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Theme.of(context).colorScheme.secondary,
                         foregroundColor: Colors.white,

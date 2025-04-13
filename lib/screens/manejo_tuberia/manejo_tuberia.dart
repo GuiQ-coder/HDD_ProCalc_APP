@@ -149,7 +149,12 @@ class ManejodeTuberiasPageState extends State<ManejodeTuberiasPage> {
         title: Text(l10n.pipeCalculator),
         backgroundColor: Theme.of(context).colorScheme.primary,
       ),
-      body: SingleChildScrollView(
+    body: GestureDetector(
+    onTap: () {
+      FocusScope.of(context).unfocus();
+    },
+    behavior: HitTestBehavior.opaque,
+    child: SingleChildScrollView(
         padding: EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -290,7 +295,7 @@ class ManejodeTuberiasPageState extends State<ManejodeTuberiasPage> {
           ],
         ),
       ),
-    );
+    ));
   }
 
 

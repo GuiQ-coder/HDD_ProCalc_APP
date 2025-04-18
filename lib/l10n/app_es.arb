@@ -217,9 +217,64 @@
   "distanceInput": "Distancia (metros)",
   "depthResult": "Profundidad:",
   "metersUnit": "metros",
-  "hddDiagramDescription": "Diagrama de profundidad-distancia HDD"
+  "hddDiagramDescription": "Diagrama de profundidad-distancia HDD",
+
   
-  }
+    "barGraphPageTitle": "Graficar barra a barra",
+    "lengthLabel": "Longitud (m)",
+    "degreesLabel": "Grados (°)",
+    "addBarButton": "Agregar Barra",
+    "deleteLastButton": "Eliminar Última",
+    "enteredBarsTitle": "Barras ingresadas:",
+    "initialPoint": "Punto inicial (0, 0)",
+    "invalidInput":"Entrada inválida, por favor, intente nuevamente.",
+    "generatingPdf":"Generando PDF...",
+    "pdfError":"Sucedió un error al momento de generar el PDF, por favor, intente nuevamente.",
+    "barItemTitle": "Barra {index}",
+    "barItemSubtitle": "Posición: {x}, {y}",
+    "tooltipText": "Distancia: {distance} m\nElevación: {elevation} m\nÁngulo: {angle}°",
+    "pdfButton": "Generar PDF",
+    "barNumber": "Barra #",
+    "totalDistance": "Distancia Total",
+    "pdfTitle": "Reporte de Barras",
+    "barsDataTitle": "Datos de Barras",
+    "summaryTitle": "Resumen",
+    "maxElevation": "Elevación Máxima",
+    "minElevation": "Elevación Mínima",
+    "barsCount": "Número de Barras",
+    "generatedBy": "Generado por HDD ProCalc",
+    "@tooltipText": {
+      "placeholders": {
+        "distance": {
+          "type": "Object"
+        },
+        "elevation": {
+          "type": "Object"
+        },
+        "angle": {
+          "type": "Object"
+        }
+      }
+    },
+    "@barItemTitle": {
+      "placeholders": {
+        "index": {
+          "type": "int"
+        }
+      }
+    },
+    "@barItemSubtitle": {
+      "placeholders": {
+        "x": {
+          "type": "Object"
+        },
+        "y": {
+          "type": "Object"
+        }
+      }
+    }
+
+}
         
     
         

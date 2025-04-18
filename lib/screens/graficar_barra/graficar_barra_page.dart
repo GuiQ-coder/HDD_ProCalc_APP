@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'dart:math';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -83,9 +84,9 @@ void _addBar() {
   }
 
   setState(() {
-    // Cálculo corregido para pendiente negativa
+    
     final double radians = degrees * pi / 180;
-    final double yIncrement = length * sin(radians);  // Usamos sin() en lugar de tan()
+    final double yIncrement = length * sin(radians);
     
     if (_bars.length == 1 && _bars.first['isInitial'] == true) {
       _bars[0] = {
@@ -138,23 +139,22 @@ void _addBar() {
 
 Future<Uint8List> _renderChartToImage() async {
   try {
-    // Validación de datos
     if (_bars.isEmpty || _totalDistance <= 0) {
       return await _createErrorImage('No hay datos suficientes');
     }
 
     // Configuración de dimensiones
-    final double width = min(max(400.0, _totalDistance * 2), 2000.0);
-    final double height = 700.0; // Increased height to show more vertical range
+    final double width = min(max(600.0, _totalDistance * 4), 3000.0);
+    final double height = 500.0;
     const double leftMargin = 80.0;
     const double rightMargin = 40.0;
     const double topMargin = 60.0;
     const double bottomMargin = 80.0;
 
-    // Cálculo de escalas corregido
+    // Cálculo de escalas
     final double xScale = (width - leftMargin - rightMargin) / _totalDistance;
     
-    // Mejorado el ajuste automático del rango Y - FIXED VARIABLE TYPE
+    // Mejorado el ajuste automático del rango Y
     final List<double> yValues = _bars.map((bar) => bar['y']! as double).toList();
     double yMin = yValues.isEmpty ? -10 : yValues.reduce(min);
     double yMax = yValues.isEmpty ? 10 : yValues.reduce(max);
@@ -317,8 +317,7 @@ Future<Uint8List> _renderChartToImage() async {
       fontWeight: FontWeight.bold,
     );
     final titleBuilder = dartui.ParagraphBuilder(paragraphStyle)
-      ..pushStyle(titleStyle)
-      ..addText('Gráfico de Perforación Direccional');
+      ..pushStyle(titleStyle);
     final titleParagraph = titleBuilder.build();
     titleParagraph.layout(dartui.ParagraphConstraints(width: width - 100));
     canvas.drawParagraph(titleParagraph, dartui.Offset(width / 2 - 100, 20));
@@ -425,9 +424,8 @@ Future<void> _generateAndSharePDF(BuildContext context) async {
           // Contenedor para la imagen con mejor adaptación
           pw.Center(
             child: pw.Container(
-              // Usar dimensiones más adecuadas para gráficos de perforación direccional
-              height: 400, // Altura mayor para visualizar mejor el eje Y
-              width: 700, // Ancho que se adapta bien al PDF en modo paisaje
+              height: 300,
+              width: 700,
               child: pw.Image(pw.MemoryImage(chartImage), fit: pw.BoxFit.contain),
             ),
           ),
@@ -500,9 +498,13 @@ Future<void> _generateAndSharePDF(BuildContext context) async {
     if (!mounted) return;
     scaffoldMessenger.hideCurrentSnackBar();
 
+    final fecha = DateTime.now();
+    final formatter = DateFormat('dd_MM_yyyy_HH_mm');
+    final fechaFormateada = formatter.format(fecha);
+
     await Printing.sharePdf(
       bytes: bytes,
-      filename: 'directional_boring_report_${DateTime.now().millisecondsSinceEpoch}.pdf',
+      filename: 'graph_bar_report_$fechaFormateada.pdf',
     );
   } catch (e) {
     if (!mounted) return;

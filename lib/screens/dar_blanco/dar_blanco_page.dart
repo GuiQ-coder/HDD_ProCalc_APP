@@ -177,14 +177,13 @@ class DarEnElBlancoPageState extends State<DarEnElBlancoPage> {
                 ElevatedButton(
                   onPressed: _calcular,
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: theme.colorScheme.primary,
+                    backgroundColor: theme.colorScheme.secondary,
                     foregroundColor: theme.colorScheme.onPrimary,
                     padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    elevation: 4, // Elevación para dar sensación de botón
-                    shadowColor: Colors.black54, // Sombra más visible
+                    elevation: 4,
                   ),
                   child: Text(
                     localizations.hitTargetCalculateButton,
@@ -236,7 +235,6 @@ class DarEnElBlancoPageState extends State<DarEnElBlancoPage> {
                     borderRadius: const BorderRadius.all(Radius.circular(12)),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black26,
                         blurRadius: 6,
                         offset: const Offset(0, 3),
                       ),
@@ -320,7 +318,6 @@ class DarEnElBlancoPageState extends State<DarEnElBlancoPage> {
       validator: validator,
       onChanged: onChanged,
       style: theme.textTheme.bodyMedium?.copyWith(
-        color: Colors.black87, // Texto más oscuro para mejor legibilidad
       ),
     );
   }

@@ -273,6 +273,27 @@
         "type": "Object"
       }
     }
-  }
+  },
   
+
+  "hitTargetTitle": "Hit the Target",
+  "hitTargetCalculationHeader": "Angle calculation to reach required depth",
+  "hitTargetPositiveSlope": "Positive Slope",
+  "hitTargetNegativeSlope": "Negative Slope",
+  "hitTargetCurrentDepth": "Current depth (cm)",
+  "hitTargetHorizontalDistance": "Horizontal distance (cm)",
+  "hitTargetRequiredDepth": "Required depth (cm)",
+  "hitTargetCalculateButton": "CALCULATE ANGLE",
+  "hitTargetResult": "RESULT",
+  "hitTargetPositiveSlopeLabel": "(Positive Slope)",
+  "hitTargetNegativeSlopeLabel": "(Negative Slope)",
+  "hitTargetPleaseEnter": "Please enter {fieldName}",
+  "@hitTargetPleaseEnter": {
+    "placeholders": {
+      "fieldName": {
+        "type": "String"
+      }
+    }
+  },
+  "hitTargetEnterValidNumber": "Enter a valid number"
 }

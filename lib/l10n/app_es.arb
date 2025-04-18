@@ -272,7 +272,28 @@
           "type": "Object"
         }
       }
-    }
+    },
+
+    "hitTargetTitle": "Dar en el Blanco",
+    "hitTargetCalculationHeader": "Cálculo de ángulo para alcanzar profundidad requerida",
+    "hitTargetPositiveSlope": "Pendiente Positiva",
+    "hitTargetNegativeSlope": "Pendiente Negativa",
+    "hitTargetCurrentDepth": "Profundidad actual (cm)",
+    "hitTargetHorizontalDistance": "Distancia horizontal (cm)",
+    "hitTargetRequiredDepth": "Profundidad requerida (cm)",
+    "hitTargetCalculateButton": "CALCULAR ÁNGULO",
+    "hitTargetResult": "RESULTADO",
+    "hitTargetPositiveSlopeLabel": "(Pendiente Positiva)",
+    "hitTargetNegativeSlopeLabel": "(Pendiente Negativa)",
+    "hitTargetPleaseEnter": "Por favor ingrese {fieldName}",
+    "@hitTargetPleaseEnter": {
+      "placeholders": {
+        "fieldName": {
+          "type": "String"
+        }
+      }
+    },
+    "hitTargetEnterValidNumber": "Ingrese un número válido"
 
 }
         

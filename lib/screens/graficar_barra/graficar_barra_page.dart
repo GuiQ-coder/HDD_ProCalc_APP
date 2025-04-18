@@ -177,9 +177,6 @@ Future<Uint8List> _renderChartToImage() async {
     final double yRange = adjustedMaxY - adjustedMinY;
     final double yScale = (height - topMargin - bottomMargin) / yRange;
 
-    // Posición del eje X corregida - aseguramos que esté visible en el gráfico
-    final double xAxisY = height - bottomMargin - ((0 - adjustedMinY) * yScale);
-    
     // Crear canvas
     final recorder = dartui.PictureRecorder();
     final canvas = Canvas(recorder, dartui.Rect.fromLTWH(0, 0, width, height));
